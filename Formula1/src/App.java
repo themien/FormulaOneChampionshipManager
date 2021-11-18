@@ -19,15 +19,9 @@ public class App {
 
             if (choice == 0) {showMenu();}
             else if (choice == 1) {formula1CM.addDriver();}
-            else if (choice == 2) {formula1CM.viewDrivers();}
-            // else if (choice == 'e') {hotel.viewEmptyRooms();}
-            // else if (choice == 'd') {hotel.deleteCustomer();}
-            // else if (choice == 'f') {hotel.findRoom();}
-            // else if (choice == 's') {hotel.saveData();}
-            // else if (choice == 'l') {hotel.loadData();}
-            // else if (choice == 'o') {hotel.viewNames();}
-            // // Shows the status of the waiting list, used for testing
-            // else if (choice == 'w') {hotel.getWaitingList().show();}
+            else if (choice == 2) {}
+            else if (choice == 3) {formula1CM.changeDriverTeam();}
+            else if (choice == 4) {formula1CM.viewDrivers();}
         }
         
     }
@@ -39,7 +33,7 @@ public class App {
     private static void showMenu() {
         System.out.println("----Menu-----");
         System.out.println("1. New Driver");
-        System.out.println("2. Delete Driver");
+        System.out.println("2. Delete driver");
         System.out.println("3. Change driver team");
         System.out.println("4. Display stats");
         System.out.println("5. Display table");

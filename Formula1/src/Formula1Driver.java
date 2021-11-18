@@ -15,6 +15,11 @@ public class Formula1Driver extends Driver {
         this.name = name;
         this.location = location;
         this.team = team;
+        this.timesFirst = 0;
+        this.timesSecond = 0;
+        this.timesThird = 0;
+        this.totalPoints = 0;
+        this.racesAttended = 0;
     }
 
     public String getTeam() {
