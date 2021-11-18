@@ -1,8 +1,8 @@
 public abstract class Driver {
     
-    public String driverName;
-    public String driverLocation;
-    public String driverTeam;
+    public String name;
+    public String location;
+    public String team;
 
     public void setTeam() {}
 }

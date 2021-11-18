@@ -45,16 +45,6 @@ public class App {
         System.out.println("5. Display table");
         System.out.println("6. Display table");
         System.out.println("");
-        System.out.println("What whould you like to do?:") ;
-        System.out.println("V: View all rooms") ;
-        System.out.println("A: Add customer to room");
-        System.out.println("E: Display Empty rooms") ;
-        System.out.println("D: Delete customer from room") ;
-        System.out.println("F: Find room from customer name") ;
-        System.out.println("S: Store program data into file") ;
-        System.out.println("L: Load program data from file") ;
-        System.out.println("O: View guests Ordered alphabetically");
-        System.out.println("W: Show Waiting list");
     }
 
 

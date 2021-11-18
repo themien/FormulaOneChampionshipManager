@@ -12,15 +12,17 @@ public class Formula1Driver extends Driver {
     private String team;
 
     public Formula1Driver(String name, String location, String team) {
-        this.driverName = name;
-        this.driverLocation = location;
-        this.driverTeam = team;
+        this.name = name;
+        this.location = location;
+        this.team = team;
     }
 
-    public void getTeam() {}
+    public String getTeam() {
+        return this.team;
+    }
 
     public void setTeam(String newTeam) {
-        this.driverTeam = newTeam;
+        this.team = newTeam;
     }
 
 }
