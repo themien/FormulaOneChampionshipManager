@@ -63,7 +63,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
             // else if (choice == 5) {formula1CM.addRace();
             // else if (choice == 6) {formula1CM.displayStatistics();
             // else if (choice == 7) {formula1CM.displayTable();
-            // else if (choice == 8) {formula1CM.saveData();
+            else if (choice == 8) {formula1CM.saveData();}
         }
         
     }
@@ -133,6 +133,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
         }
     }
 
+
     public void viewDrivers() {
         for (int i=0; i<nOfDrivers; i++) {
             Formula1Driver driver = drivers.get(i);
@@ -143,6 +144,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
             System.out.println("");
         }
     }
+
 
     public void changeDriverTeam() {
         System.out.print("Enter the name of the driver performing a change of team: ");
@@ -159,10 +161,9 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
 
     /**
      * Saves the Formula 1 Chmpionship data to a "formula1.data" file
-     * Empty rooms are saved as "e"
      */
     public void saveData() {
-        // TODO: needs to save championship and drivers data, not only drivers
+        // TODO: needs to save championship races and drivers data, not only drivers
         try {
             FileWriter wf = new FileWriter("formula1.data");
             for (int i=0; i<nOfDrivers; i++) {
