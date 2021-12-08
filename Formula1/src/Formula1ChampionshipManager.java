@@ -81,6 +81,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
         System.out.println("5. Display table");
         System.out.println("6. Display table");
         System.out.println("");
+        System.out.println("8. Save data");
     }
 
 
