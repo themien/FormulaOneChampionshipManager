@@ -1,20 +1,24 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
-interface ChampionshipManager {
-    public void addDriver();
-    public void deleteDriver();
-    public void changeDriverTeam();
-    public void addRace();
-    public void displayStatistics();
-    public void displayTable();
-    public void saveData();
-    public void autoloadData();
-}
+// interface ChampionshipManager {
+//     public void addDriver();
+//     public void deleteDriver();
+//     public void changeDriverTeam();
+//     public void addRace();
+//     public void displayStatistics();
+//     public void displayTable();
+//     public void saveData();
+//     public void autoloadData();
+// }
 
 
 
-public class Formula1ChampionshipManager implements ChampionshipManager{
+public class Formula1ChampionshipManager {//implements ChampionshipManager{
 
     // scanner instance to get user input
     static final Scanner input = new Scanner(System.in);
@@ -37,6 +41,7 @@ public class Formula1ChampionshipManager implements ChampionshipManager{
     // collection of the championship races
     public ArrayList<Race> races = new ArrayList<Race>();
 
+
     public static void main(String[] args) throws Exception {
 
         Formula1ChampionshipManager formula1CM = new Formula1ChampionshipManager();
@@ -52,13 +57,13 @@ public class Formula1ChampionshipManager implements ChampionshipManager{
 
             if (choice == 0) {showMenu();}
             else if (choice == 1) {formula1CM.addDriver();}
-            else if (choice == 2) {formula1CM.deleteDriver();}
+            // else if (choice == 2) {formula1CM.deleteDriver();}
             else if (choice == 3) {formula1CM.changeDriverTeam();}
             else if (choice == 4) {formula1CM.viewDrivers();}
-            else if (choice == 5) {formula1CM.addRace();
-            else if (choice == 6) {formula1CM.displayStatistics();
-            else if (choice == 7) {formula1CM.displayTable();
-            else if (choice == 8) {formula1CM.saveData();
+            // else if (choice == 5) {formula1CM.addRace();
+            // else if (choice == 6) {formula1CM.displayStatistics();
+            // else if (choice == 7) {formula1CM.displayTable();
+            // else if (choice == 8) {formula1CM.saveData();
         }
         
     }
@@ -150,5 +155,57 @@ public class Formula1ChampionshipManager implements ChampionshipManager{
         String newTeam =  input.next();
         driver.setTeam(newTeam);
     }
+
+
+    /**
+     * Saves the Formula 1 Chmpionship data to a "formula1.data" file
+     * Empty rooms are saved as "e"
+     */
+    public void saveData() {
+        // TODO: needs to save championship and drivers data, not only drivers
+        try {
+            FileWriter wf = new FileWriter("formula1.data");
+            for (int i=0; i<nOfDrivers; i++) {
+                Formula1Driver driver = drivers.get(i);
+                wf.write(driver.name + "," +
+                driver.location + "," +
+                driver.getTeam() +  "\n");
+                }
+            wf.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        System.out.println("Formula 1 data saved.");
+    }
+
+
+    // /**
+    //  * Loads the hotel data from "hotel.data" file
+    //  */
+    // public void autoloadData() {
+    //     try { 
+    //         Scanner rf = new Scanner(new BufferedReader(new FileReader("hotel.data")));
+    //         String fileLine;
+    //         // does not check if file has more lines than number of rooms
+    //         // not implemented as file save from program itslf, no user input
+    //         int index = 0;
+    //         while (rf.hasNext()) {                
+    //             fileLine = rf.nextLine(); 
+    //             if (fileLine.equals("e")) {
+    //                 this.rooms[index] = new Room(index);
+    //             } else {
+    //                 String[] parts = fileLine.split(",");
+    //                 Person guest = new Person(parts[0], parts[1], parts[2]);
+    //                 this.rooms[index] = new Room(index, guest, Integer.parseInt(parts[3]));
+    //             }
+    //             index++;
+    //         }
+    //         rf.close();
+    //         System.out.println("Hotel data loaded.");
+    //     } catch (IOException e) {
+    //         System.out.println("Error IOException is: " + e);
+    //     }
+    // }
 
 }
