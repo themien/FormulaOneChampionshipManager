@@ -5,6 +5,11 @@ interface ChampionshipManager {
     public void addDriver();
     public void deleteDriver();
     public void changeDriverTeam();
+    public void addRace();
+    public void displayStatistics();
+    public void displayTable();
+    public void saveData();
+    public void autoloadData();
 }
 
 
@@ -50,6 +55,10 @@ public class Formula1ChampionshipManager implements ChampionshipManager{
             else if (choice == 2) {formula1CM.deleteDriver();}
             else if (choice == 3) {formula1CM.changeDriverTeam();}
             else if (choice == 4) {formula1CM.viewDrivers();}
+            else if (choice == 5) {formula1CM.addRace();
+            else if (choice == 6) {formula1CM.displayStatistics();
+            else if (choice == 7) {formula1CM.displayTable();
+            else if (choice == 8) {formula1CM.saveData();
         }
         
     }
