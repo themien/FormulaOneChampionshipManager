@@ -1,6 +1,43 @@
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class Race {
+
+    private String date;
+    private ArrayList<Formula1Driver> standings;
+
+    /*
+        This constructor just randomises the drivers array to get the standings
+    */
+    public Race(ArrayList<Formula1Driver> drivers) {
+        this.standings = new ArrayList<Formula1Driver>(drivers);
+        Collections.shuffle(this.standings);
+        //TODO: input date
+        this.date = "2021-01-01";
+        // displayStandings();
+    }
+
+    public String getDate() {
+        return this.date;
+    }
+
+    public ArrayList<Formula1Driver> getStandings() {
+        return this.standings;
+    }
+
+    public void displayStandings () {
+        for (int i=0; i<this.standings.size(); i++) {
+            String driverName = this.standings.get(i).name;
+            int points = assignPoints(i+1);
+            System.out.println("");
+            System.out.println("Position: " + (i+1));
+            System.out.println("Name: " + driverName);
+            System.out.println("Points: " + points);
+            System.out.println("");
+        }
+    }
     
-    public int calculatePoints(int finalStanding) {
+    public static int assignPoints(int finalStanding) {
         int points;
         if (finalStanding == 1) {points=25;}
         else if (finalStanding == 2) {points=18;}
@@ -15,4 +52,7 @@ public class Race {
         else points = 0;
         return points;
     }
+
+
+    public void simulate() {}
 }

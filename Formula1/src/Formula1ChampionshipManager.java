@@ -58,12 +58,12 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
             if (choice == 0) {showMenu();}
             else if (choice == 1) {formula1CM.addDriver();}
             // else if (choice == 2) {formula1CM.deleteDriver();}
-            else if (choice == 3) {formula1CM.changeDriverTeam();}
+            // else if (choice == 3) {formula1CM.changeDriverTeam();}
             else if (choice == 4) {formula1CM.viewDrivers();}
-            // else if (choice == 5) {formula1CM.addRace();
+            else if (choice == 5) {formula1CM.addRace();}
             // else if (choice == 6) {formula1CM.displayStatistics();
             // else if (choice == 7) {formula1CM.displayTable();
-            else if (choice == 8) {formula1CM.saveData();}
+            else if (choice == 8) {formula1CM.saveDriversData();}
         }
         
     }
@@ -80,7 +80,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
         System.out.println("2. Delete driver");
         System.out.println("3. Change driver team");
         System.out.println("4. Display stats");
-        System.out.println("5. Display table");
+        System.out.println("5. Add a race to the Formula 1 Championship");
         System.out.println("6. Display table");
         System.out.println("");
         System.out.println("8. Save data");
@@ -138,14 +138,23 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
     }
 
 
+    public static Formula1Driver driverFindByName(ArrayList<Formula1Driver> drivers, String name) {
+        return drivers.stream().filter(driver-> name.equals(driver.getName()))
+                .findFirst().orElse(null);
+    }
+
+
     public void viewDrivers() {
         for (int i=0; i<nOfDrivers; i++) {
             Formula1Driver driver = drivers.get(i);
             System.out.println("");
-            System.out.println("Driver: " + driver.name);
-            System.out.println("Location: " + driver.location);
+            System.out.println("Driver: " + driver.getName());
+            System.out.println("Location: " + driver.getLocation());
             System.out.println("Team: " + driver.getTeam());
-            System.out.println("");
+            System.out.println("First: " + driver.getTimesFirst());
+            System.out.println("Second: " + driver.getTimesSecond());
+            System.out.println("Points: " + driver.getTotalPoints());
+            System.out.println("Races attended: " + driver.getRacesAttended());
         }
     }
 
@@ -163,10 +172,23 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
     }
 
 
+    public void addRace() {
+        Race race = new Race(this.drivers);
+        races.add(race);
+        // update formula 1 drivers data
+        ArrayList<Formula1Driver> standings = race.getStandings();
+        for (int i=0; i<standings.size(); i++) {
+            Formula1Driver driver = driverFindByName(this.drivers, standings.get(i).name);
+            driver.updateStatistics(i+1, Race.assignPoints(i+1));
+        }
+    }
+
+
+
     /**
-     * Saves the Formula 1 Chmpionship data to a "formula1.data" file
+     * Saves the Formula 1 Chmpionship drivers data to a "drivers.data" file
      */
-    public void saveData() {
+    public void saveDriversData() {
         // TODO: needs to save championship races and drivers data, not only drivers
         try {
             FileWriter wf = new FileWriter("Formula1/data/drivers.data");
@@ -181,7 +203,17 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
-        System.out.println("Formula 1 data saved.");
+        System.out.println("Drivers data saved.");
+    }
+
+    public void saveRacesData() {
+        saveDriversData();
+    }
+
+
+
+    public void saveAllData() {
+        saveDriversData();
     }
 
 
