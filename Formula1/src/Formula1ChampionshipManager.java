@@ -21,7 +21,7 @@ import java.io.IOException;
 public class Formula1ChampionshipManager {//implements ChampionshipManager{
 
     // scanner instance to get user input
-    static final Scanner input = new Scanner(System.in);
+    static Scanner input = new Scanner(System.in).useDelimiter("\n");
 
     // sets a max amount of driver that can 
     // participate to the Formula 1 Championship 
@@ -32,7 +32,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
     // by counting the array drivers
     private int nOfDrivers = 0;
 
-    // to maintain a list of all formla 1 teams
+    // to maintain a list of all formula 1 teams
     public ArrayList<String> teams = new ArrayList<String>();
 
     // collection of the championship drivers
@@ -69,6 +69,8 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
     }
 
 
+
+
     /**
      * Display the menu in the console
      */
@@ -93,9 +95,10 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
     private static int getMenuChoice() {
         System.out.println("");
         int choice;
-        System.out.print("Press 0 to show the menu.");
-        System.out.print(" Please enter an option: ");
+        System.out.println("Press 0 to show the menu.");
+        System.out.print("Please enter an option: ");
         choice = input.nextInt();
+        System.out.println();
          
 
         if (choice < -1 || choice >10 ) {
@@ -166,7 +169,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
     public void saveData() {
         // TODO: needs to save championship races and drivers data, not only drivers
         try {
-            FileWriter wf = new FileWriter("formula1.data");
+            FileWriter wf = new FileWriter("Formula1/data/drivers.data");
             for (int i=0; i<nOfDrivers; i++) {
                 Formula1Driver driver = drivers.get(i);
                 wf.write(driver.name + "," +
