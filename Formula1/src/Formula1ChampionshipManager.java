@@ -63,7 +63,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
             else if (choice == 5) {formula1CM.addRace();}
             // else if (choice == 6) {formula1CM.displayStatistics();
             // else if (choice == 7) {formula1CM.displayTable();
-            else if (choice == 8) {formula1CM.saveDriversData();}
+            else if (choice == 8) {formula1CM.saveAllData();}
         }
         
     }
@@ -153,6 +153,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
             System.out.println("Team: " + driver.getTeam());
             System.out.println("First: " + driver.getTimesFirst());
             System.out.println("Second: " + driver.getTimesSecond());
+            System.out.println("Third: " + driver.getTimesThird());
             System.out.println("Points: " + driver.getTotalPoints());
             System.out.println("Races attended: " + driver.getRacesAttended());
         }
@@ -189,14 +190,19 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
      * Saves the Formula 1 Chmpionship drivers data to a "drivers.data" file
      */
     public void saveDriversData() {
-        // TODO: needs to save championship races and drivers data, not only drivers
+        // TODO: needs to also save races data, not only drivers
         try {
             FileWriter wf = new FileWriter("Formula1/data/drivers.data");
             for (int i=0; i<nOfDrivers; i++) {
                 Formula1Driver driver = drivers.get(i);
-                wf.write(driver.name + "," +
-                driver.location + "," +
-                driver.getTeam() +  "\n");
+                wf.write(driver.getName() + "," +
+                driver.getLocation() + "," +
+                driver.getTeam() + "," +
+                driver.getTimesFirst() + "," +
+                driver.getTimesSecond() + "," +
+                driver.getTimesThird() + "," +
+                driver.getTotalPoints() + "," +
+                driver.getRacesAttended() +  "\n");
                 }
             wf.close();
         } catch (IOException e) {
