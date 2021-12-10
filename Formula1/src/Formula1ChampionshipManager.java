@@ -49,15 +49,15 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
 
         int choice = 1;
 
-        showMenu();
+        Menu.showMenu();
 
         /* loop to keep the application running.
            The loop will quit with -1 as input */
         while (choice != -1) {
                                
-            choice = getMenuChoice();
+            choice = Menu.getMenuChoice(input);
 
-            if (choice == 0) {showMenu();}
+            if (choice == 0) {Menu.showMenu();}
             else if (choice == 1) {formula1CM.addDriver();}
             // else if (choice == 2) {formula1CM.deleteDriver();}
             // else if (choice == 3) {formula1CM.changeDriverTeam();}
@@ -70,23 +70,6 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
         
     }
 
-
-
-
-    /**
-     * Display the menu in the console
-     */
-    private static void showMenu() {
-        System.out.println("----Menu-----");
-        System.out.println("1. New Driver");
-        System.out.println("2. Delete driver");
-        System.out.println("3. Change driver team");
-        System.out.println("4. Display stats");
-        System.out.println("5. Add a race to the Formula 1 Championship");
-        System.out.println("6. Display table");
-        System.out.println("");
-        System.out.println("8. Save data");
-    }
 
     /**
      * Loads the Formula 1 Championship data from "drivers.data" file
@@ -127,27 +110,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
     }
 
 
-    /**
-     * Prompts for a menu option
-     * @return the menu option chosen
-     */
-    private static int getMenuChoice() {
-        System.out.println("");
-        int choice;
-        System.out.println("Press 0 to show the menu.");
-        System.out.print("Please enter an option: ");
-        choice = input.nextInt();
-        System.out.println();
-         
-
-        if (choice < -1 || choice >10 ) {
-            System.out.println("Choice not recognised, please try again.");
-            // Recursive method to get a valid input
-            choice = getMenuChoice();
-        }
-
-        return choice;
-    }
+    
 
 
 
