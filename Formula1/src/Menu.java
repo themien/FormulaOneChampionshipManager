@@ -12,8 +12,8 @@ public class Menu {
         System.out.println("3. Change driver team");
         System.out.println("4. Display stats");
         System.out.println("5. Add a race to the Formula 1 Championship");
-        System.out.println("6. Display table");
         System.out.println("");
+        System.out.println("7. Display table");
         System.out.println("8. Save data");
     }
 

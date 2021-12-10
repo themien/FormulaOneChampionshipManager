@@ -12,7 +12,7 @@ interface ChampionshipManager {
     public void deleteDriver();
     public void changeDriverTeam();
     public void addRace();
-//     public void displayStatistics();
+    public void displayStatistics();
     public void displayTable();
     public void saveData();
     public void autoLoadData();
@@ -62,9 +62,9 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
             else if (choice == 1) {formula1CM.addDriver();}
             else if (choice == 2) {formula1CM.deleteDriver();}
             else if (choice == 3) {formula1CM.changeDriverTeam();}
-            else if (choice == 4) {formula1CM.viewDrivers();}
+            // else if (choice == 4) {formula1CM.viewDrivers();} // not needed
             else if (choice == 5) {formula1CM.addRace();}
-            // else if (choice == 6) {formula1CM.displayStatistics();
+            else if (choice == 6) {formula1CM.displayStatistics();}
             else if (choice == 7) {formula1CM.displayTable();}
             else if (choice == 8) {formula1CM.saveAllData();}
         }
@@ -164,19 +164,18 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
     }
 
 
-    public void viewDrivers() {
-        for (int i=0; i<nOfDrivers; i++) {
-            Formula1Driver driver = drivers.get(i);
-            System.out.println("");
-            System.out.println("Driver: " + driver.getName());
-            System.out.println("Location: " + driver.getLocation());
-            System.out.println("Team: " + driver.getTeam());
-            System.out.println("First: " + driver.getTimesFirst());
-            System.out.println("Second: " + driver.getTimesSecond());
-            System.out.println("Third: " + driver.getTimesThird());
-            System.out.println("Points: " + driver.getTotalPoints());
-            System.out.println("Races attended: " + driver.getRacesAttended());
-        }
+    public void displayStatistics() {
+        System.out.print("Select the driver name for which to provide statistics: ");
+        String driversearch = input.next();
+        Formula1Driver driver = driverFindByName(driversearch);
+        System.out.println("Driver: " + driver.getName());
+        System.out.println("Location: " + driver.getLocation());
+        System.out.println("Team: " + driver.getTeam());
+        System.out.println("First places: " + driver.getTimesFirst());
+        System.out.println("Second places: " + driver.getTimesSecond());
+        System.out.println("Third places: " + driver.getTimesThird());
+        System.out.println("Points: " + driver.getTotalPoints());
+        System.out.println("Races attended: " + driver.getRacesAttended());
     }
 
 
