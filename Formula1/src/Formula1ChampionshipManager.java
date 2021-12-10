@@ -5,16 +5,16 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-// interface ChampionshipManager {
-//     public void addDriver();
+interface ChampionshipManager {
+    public void addDriver();
 //     public void deleteDriver();
-//     public void changeDriverTeam();
-//     public void addRace();
+    public void changeDriverTeam();
+    public void addRace();
 //     public void displayStatistics();
 //     public void displayTable();
-//     public void saveData();
-//     public void autoloadData();
-// }
+    public void saveData();
+    public void autoLoadData();
+}
 
 
 
@@ -45,11 +45,10 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
     public static void main(String[] args) throws Exception {
 
         Formula1ChampionshipManager formula1CM = new Formula1ChampionshipManager();
-        formula1CM.autoloadData();
-
-        int choice = 1;
+        formula1CM.autoLoadData();
 
         Menu.showMenu();
+        int choice = 1;
 
         /* loop to keep the application running.
            The loop will quit with -1 as input */
@@ -60,7 +59,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
             if (choice == 0) {Menu.showMenu();}
             else if (choice == 1) {formula1CM.addDriver();}
             // else if (choice == 2) {formula1CM.deleteDriver();}
-            // else if (choice == 3) {formula1CM.changeDriverTeam();}
+            else if (choice == 3) {formula1CM.changeDriverTeam();}
             else if (choice == 4) {formula1CM.viewDrivers();}
             else if (choice == 5) {formula1CM.addRace();}
             // else if (choice == 6) {formula1CM.displayStatistics();
@@ -71,11 +70,23 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
     }
 
 
+        /* 
+     * Updates the properties of the Formula 1 Driver Championship instance
+     * when a new formula1Driver is added. 
+     */
+    private void updateStateOnAdd(Formula1Driver formula1Driver) {
+        this.teams.add(formula1Driver.getTeam());
+        this.drivers.add(formula1Driver);
+        this.nOfDrivers = this.nOfDrivers + 1;
+    }
+
+
+
     /**
      * Loads the Formula 1 Championship data from "drivers.data" file
      * TODO: also load from races.data file
      */
-    private void autoloadData() {
+    private void autoLoadData() {
         try { 
             Scanner rf = new Scanner(new BufferedReader(new FileReader("Formula1/data/drivers.data")));
             String fileRecord;
@@ -97,21 +108,21 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
         }
     }
 
-    private void updateStateOnAdd(Formula1Driver formula1Driver) {
-        this.teams.add(formula1Driver.getTeam());
-        this.drivers.add(formula1Driver);
-        this.nOfDrivers = this.nOfDrivers + 1;
-    }
 
-
-    private static int parseFileInt(String fileString) {
+    public static int parseFileInt(String fileString) {
         int parsedInt = Integer.parseInt(fileString);
         return parsedInt;
     }
 
 
-    
-
+    /*
+      This method retrieves the Formula1Driver whose name equals the
+      name provided in the method signature
+    */
+    public Formula1Driver driverFindByName(String name) {
+        return this.drivers.stream().filter(driver-> name.equals(driver.getName()))
+                .findFirst().orElse(null);
+    }
 
 
     public void addDriver() {
@@ -138,16 +149,6 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
     }
 
 
-    /*
-        This method retrieves the Formula1Driver whose name equals the
-        name provided in the method signature
-    */
-    public static Formula1Driver driverFindByName(ArrayList<Formula1Driver> drivers, String name) {
-        return drivers.stream().filter(driver-> name.equals(driver.getName()))
-                .findFirst().orElse(null);
-    }
-
-
     public void viewDrivers() {
         for (int i=0; i<nOfDrivers; i++) {
             Formula1Driver driver = drivers.get(i);
@@ -167,13 +168,19 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
     public void changeDriverTeam() {
         System.out.print("Enter the name of the driver performing a change of team: ");
         String driversearch = input.next();
-        // TODO: Get driver instance from name
-        Formula1Driver driver = drivers.get(0);
-        // TODO: CHECK IF DRIVER EXISTS 
-        System.out.print("Enter the name of the new team: ");
-        // TODO: CHECK THAT THERE IS NO DRIVER W THAT TEAM ALREADY
-        String newTeam =  input.next();
-        driver.setTeam(newTeam);
+        Formula1Driver driver = driverFindByName(driversearch);
+        if (driver == null) {System.out.println("Driver does not exist");}
+        else {
+            System.out.print("Enter the name of the new team: ");
+            String newTeam =  input.next();
+            if (this.teams.contains(newTeam)) {
+                System.out.println("Driver's team not changed, ther is already another driver participating with the same team");
+            } else {
+                this.teams.remove(driver.getTeam());
+                driver.setTeam(newTeam);
+                this.teams.add(newTeam);
+            }
+        }
     }
 
 
@@ -183,7 +190,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
         // update formula 1 drivers data
         ArrayList<Formula1Driver> standings = race.getStandings();
         for (int i=0; i<standings.size(); i++) {
-            Formula1Driver driver = driverFindByName(this.drivers, standings.get(i).name);
+            Formula1Driver driver = driverFindByName(standings.get(i).name);
             driver.updateStatistics(i+1, Race.assignPoints(i+1));
         }
     }
