@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -11,7 +13,7 @@ interface ChampionshipManager {
     public void changeDriverTeam();
     public void addRace();
 //     public void displayStatistics();
-//     public void displayTable();
+    public void displayTable();
     public void saveData();
     public void autoLoadData();
 }
@@ -63,7 +65,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
             else if (choice == 4) {formula1CM.viewDrivers();}
             else if (choice == 5) {formula1CM.addRace();}
             // else if (choice == 6) {formula1CM.displayStatistics();
-            // else if (choice == 7) {formula1CM.displayTable();
+            else if (choice == 7) {formula1CM.displayTable();}
             else if (choice == 8) {formula1CM.saveAllData();}
         }
         
@@ -98,7 +100,8 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
                 String name = parts[0], location = parts[1], team = parts[2];
                 int timesFirst = parseFileInt(parts[3]), timesSecond = parseFileInt(parts[4]), timesThird = parseFileInt(parts[4]);
                 int totalPoints = parseFileInt(parts[6]), racesAttended = parseFileInt(parts[7]);
-                Formula1Driver driver = new Formula1Driver(name, location, team, timesFirst, timesSecond, timesThird, totalPoints, racesAttended);
+                Formula1Driver driver = new Formula1Driver(name, location, team, timesFirst, timesSecond, 
+                                                        timesThird, totalPoints, racesAttended);
                 updateStateOnAdd(driver);
             }
             rf.close();
@@ -139,11 +142,11 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
             Formula1Driver driver = new Formula1Driver(name, location, team);
             // check that there is no driver already participating with that team
             if (teams.contains(driver.getTeam())) {
-                System.out.println("There is already a driver belonging to that team");
+                System.out.println("Driver not added. There is already a driver belonging to that team.");
             }    
             else {
                 updateStateOnAdd(driver);
-                System.out.println("Driver added");
+                System.out.println("Driver added.");
             }
         }
     }
@@ -173,12 +176,14 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
         else {
             System.out.print("Enter the name of the new team: ");
             String newTeam =  input.next();
+            // check if there is a driver participating with that team already
             if (this.teams.contains(newTeam)) {
-                System.out.println("Driver's team not changed, ther is already another driver participating with the same team");
+                System.out.println("Driver's team not changed. There is already another driver participating with the same team.");
             } else {
                 this.teams.remove(driver.getTeam());
                 driver.setTeam(newTeam);
                 this.teams.add(newTeam);
+                System.out.println("Driver team updated.");
             }
         }
     }
@@ -195,6 +200,15 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
         }
     }
 
+
+    public void displayTable() {
+        Collections.sort(this.drivers, Comparator.comparing((Formula1Driver driver) -> driver.getTotalPoints()).reversed());
+        Collections.sort(this.drivers, Comparator.comparing((Formula1Driver driver) -> driver.getTimesFirst()).reversed());
+		for (int i = 0; i<this.drivers.size(); i++) {
+            Formula1Driver driver = this.drivers.get(i);
+            System.out.println(driver.getName() + " | " + driver.getTotalPoints() + " | " + driver.getTimesFirst());
+        }
+    }
 
 
     /**
