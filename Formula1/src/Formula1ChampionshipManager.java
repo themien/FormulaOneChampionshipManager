@@ -9,7 +9,7 @@ import java.io.IOException;
 
 interface ChampionshipManager {
     public void addDriver();
-//     public void deleteDriver();
+    public void deleteDriver();
     public void changeDriverTeam();
     public void addRace();
 //     public void displayStatistics();
@@ -60,7 +60,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
 
             if (choice == 0) {Menu.showMenu();}
             else if (choice == 1) {formula1CM.addDriver();}
-            // else if (choice == 2) {formula1CM.deleteDriver();}
+            else if (choice == 2) {formula1CM.deleteDriver();}
             else if (choice == 3) {formula1CM.changeDriverTeam();}
             else if (choice == 4) {formula1CM.viewDrivers();}
             else if (choice == 5) {formula1CM.addRace();}
@@ -152,6 +152,18 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
     }
 
 
+    public void deleteDriver() {
+        System.out.print("Deleting driver. Enter the name of the driver to delete permanently: ");
+        String driversearch = input.next();
+        Formula1Driver driver = driverFindByName(driversearch);
+        if (driver == null) {System.out.println("Driver does not exist");}
+        else {
+            this.teams.remove(driver.getTeam());
+            this.drivers.remove(driver);
+        }
+    }
+
+
     public void viewDrivers() {
         for (int i=0; i<nOfDrivers; i++) {
             Formula1Driver driver = drivers.get(i);
@@ -203,6 +215,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
 
     public void displayTable() {
         Collections.sort(this.drivers, Comparator.comparing((Formula1Driver driver) -> driver.getTotalPoints()).reversed());
+        //TODO: this is a mistake, just resorting for 1st positions
         Collections.sort(this.drivers, Comparator.comparing((Formula1Driver driver) -> driver.getTimesFirst()).reversed());
 		for (int i = 0; i<this.drivers.size(); i++) {
             Formula1Driver driver = this.drivers.get(i);
