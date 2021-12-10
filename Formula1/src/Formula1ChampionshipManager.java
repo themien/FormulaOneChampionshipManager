@@ -45,6 +45,8 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
     public static void main(String[] args) throws Exception {
 
         Formula1ChampionshipManager formula1CM = new Formula1ChampionshipManager();
+        formula1CM.autoloadData();
+
         int choice = 1;
 
         showMenu();
@@ -86,6 +88,43 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
         System.out.println("8. Save data");
     }
 
+    /**
+     * Loads the Formula 1 Championship data from "drivers.data" file
+     * TODO: also load from races.data file
+     */
+    private void autoloadData() {
+        try { 
+            Scanner rf = new Scanner(new BufferedReader(new FileReader("Formula1/data/drivers.data")));
+            String fileRecord;
+            // does not check if file has more records than maxDrivers
+            // not implemented as file save from program itslf, no user input
+            while (rf.hasNext()) {                
+                fileRecord = rf.nextLine(); 
+                String[] parts = fileRecord.split(",");
+                String name = parts[0], location = parts[1], team = parts[2];
+                int timesFirst = parseFileInt(parts[3]), timesSecond = parseFileInt(parts[4]), timesThird = parseFileInt(parts[4]);
+                int totalPoints = parseFileInt(parts[6]), racesAttended = parseFileInt(parts[7]);
+                Formula1Driver driver = new Formula1Driver(name, location, team, timesFirst, timesSecond, timesThird, totalPoints, racesAttended);
+                updateStateOnAdd(driver);
+            }
+            rf.close();
+            System.out.println("Formula 1 Championship data loaded.");
+        } catch (IOException e) {
+            System.out.println("Error IOException is: " + e);
+        }
+    }
+
+    private void updateStateOnAdd(Formula1Driver formula1Driver) {
+        this.teams.add(formula1Driver.getTeam());
+        this.drivers.add(formula1Driver);
+        this.nOfDrivers = this.nOfDrivers + 1;
+    }
+
+
+    private static int parseFileInt(String fileString) {
+        int parsedInt = Integer.parseInt(fileString);
+        return parsedInt;
+    }
 
 
     /**
@@ -129,15 +168,17 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
                 System.out.println("There is already a driver belonging to that team");
             }    
             else {
-                teams.add(driver.getTeam());
-                drivers.add(driver);
-                this.nOfDrivers = this.nOfDrivers + 1;
+                updateStateOnAdd(driver);
                 System.out.println("Driver added");
             }
         }
     }
 
 
+    /*
+        This method retrieves the Formula1Driver whose name equals the
+        name provided in the method signature
+    */
     public static Formula1Driver driverFindByName(ArrayList<Formula1Driver> drivers, String name) {
         return drivers.stream().filter(driver-> name.equals(driver.getName()))
                 .findFirst().orElse(null);
@@ -221,34 +262,5 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
     public void saveAllData() {
         saveDriversData();
     }
-
-
-    // /**
-    //  * Loads the hotel data from "hotel.data" file
-    //  */
-    // public void autoloadData() {
-    //     try { 
-    //         Scanner rf = new Scanner(new BufferedReader(new FileReader("hotel.data")));
-    //         String fileLine;
-    //         // does not check if file has more lines than number of rooms
-    //         // not implemented as file save from program itslf, no user input
-    //         int index = 0;
-    //         while (rf.hasNext()) {                
-    //             fileLine = rf.nextLine(); 
-    //             if (fileLine.equals("e")) {
-    //                 this.rooms[index] = new Room(index);
-    //             } else {
-    //                 String[] parts = fileLine.split(",");
-    //                 Person guest = new Person(parts[0], parts[1], parts[2]);
-    //                 this.rooms[index] = new Room(index, guest, Integer.parseInt(parts[3]));
-    //             }
-    //             index++;
-    //         }
-    //         rf.close();
-    //         System.out.println("Hotel data loaded.");
-    //     } catch (IOException e) {
-    //         System.out.println("Error IOException is: " + e);
-    //     }
-    // }
 
 }
