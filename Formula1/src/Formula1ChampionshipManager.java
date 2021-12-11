@@ -38,7 +38,8 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
     public ArrayList<String> teams = new ArrayList<String>();
 
     // collection of the championship drivers
-    public ArrayList<Formula1Driver> drivers = new ArrayList<Formula1Driver>();
+    // TODO: either remove static or implement this class as static class
+    public static ArrayList<Formula1Driver> drivers = new ArrayList<Formula1Driver>();
 
     // collection of the championship races
     public ArrayList<Race> races = new ArrayList<Race>();
@@ -62,7 +63,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
             else if (choice == 1) {formula1CM.addDriver();}
             else if (choice == 2) {formula1CM.deleteDriver();}
             else if (choice == 3) {formula1CM.changeDriverTeam();}
-            // else if (choice == 4) {formula1CM.viewDrivers();} // not needed
+            else if (choice == 4) {new Formula1TableSwing(drivers);} // not needed
             else if (choice == 5) {formula1CM.addRace();}
             else if (choice == 6) {formula1CM.displayStatistics();}
             else if (choice == 7) {formula1CM.displayTable();}
