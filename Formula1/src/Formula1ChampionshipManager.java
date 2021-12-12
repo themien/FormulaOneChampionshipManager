@@ -23,7 +23,7 @@ interface ChampionshipManager {
 public class Formula1ChampionshipManager {//implements ChampionshipManager{
 
     // scanner instance to get user input
-    static Scanner input = new Scanner(System.in).useDelimiter("\n");
+    public static Scanner input = new Scanner(System.in).useDelimiter("\n");
 
     // sets a max amount of driver that can 
     // participate to the Formula 1 Championship 
@@ -39,7 +39,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
 
     // collection of the championship drivers
     // TODO: either remove static or implement this class as static class
-    public static ArrayList<Formula1Driver> drivers = new ArrayList<Formula1Driver>();
+    public ArrayList<Formula1Driver> drivers = new ArrayList<Formula1Driver>();
 
     // collection of the championship races
     public ArrayList<Race> races = new ArrayList<Race>();
@@ -63,7 +63,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
             else if (choice == 1) {formula1CM.addDriver();}
             else if (choice == 2) {formula1CM.deleteDriver();}
             else if (choice == 3) {formula1CM.changeDriverTeam();}
-            else if (choice == 4) {new Formula1TableSwing(drivers);} // not needed
+            else if (choice == 4) {new Formula1TableSwing(formula1CM.sortByPointsAndTimesFirst());} // not needed
             else if (choice == 5) {formula1CM.addRace();}
             else if (choice == 6) {formula1CM.displayStatistics();}
             else if (choice == 7) {formula1CM.displayTable();}
@@ -213,12 +213,19 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
     }
 
 
-    public void displayTable() {
-        Collections.sort(this.drivers, Comparator.comparing((Formula1Driver driver) -> driver.getTotalPoints()).reversed());
+    public ArrayList<Formula1Driver> sortByPointsAndTimesFirst() {
+        ArrayList<Formula1Driver> driversSort = new ArrayList<Formula1Driver>(this.drivers);
         //TODO: this is a mistake, just resorting for 1st positions
-        Collections.sort(this.drivers, Comparator.comparing((Formula1Driver driver) -> driver.getTimesFirst()).reversed());
-		for (int i = 0; i<this.drivers.size(); i++) {
-            Formula1Driver driver = this.drivers.get(i);
+        Collections.sort(driversSort, Comparator.comparing((Formula1Driver driver) -> driver.getTotalPoints()).reversed());
+        return driversSort;
+    }
+
+
+    public void displayTable() {
+        ArrayList<Formula1Driver> drivers = sortByPointsAndTimesFirst();
+        // TODO:make table nicer
+		for (int i = 0; i<drivers.size(); i++) {
+            Formula1Driver driver = drivers.get(i);
             System.out.println(driver.getName() + " | " + driver.getTotalPoints() + " | " + driver.getTimesFirst());
         }
     }
@@ -251,6 +258,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
     }
 
     public void saveRacesData() {
+        // TODO:save races data
         saveDriversData();
     }
 

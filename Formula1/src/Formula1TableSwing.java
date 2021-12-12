@@ -1,5 +1,3 @@
-// import java.util.ArrayList;
-
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -12,13 +10,13 @@ public class Formula1TableSwing extends JPanel {
     JTable j;
  
     // Constructor
-    Formula1TableSwing(ArrayList<Formula1Driver> drivers)
+    public Formula1TableSwing(ArrayList<Formula1Driver> drivers)
     {
         // Frame initialization
         f = new JFrame();
  
         // Frame Title
-        f.setTitle("JTable Example");
+        f.setTitle("Formula 1 Championship Table");
  
         String[] columnNames = {"Name",
                                 "Location",
@@ -28,6 +26,7 @@ public class Formula1TableSwing extends JPanel {
                                 "3rd positions",
                                 "Total Points",
                                 "Races attended"};
+                                
         int columnCount = columnNames.length;
         int rowCount = drivers.size();
         Object[][] data = getDriversData(rowCount, columnCount, drivers);
