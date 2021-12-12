@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+
 interface ChampionshipManager {
     public void addDriver();
     public void deleteDriver();
@@ -38,7 +39,6 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
     public ArrayList<String> teams = new ArrayList<String>();
 
     // collection of the championship drivers
-    // TODO: either remove static or implement this class as static class
     public ArrayList<Formula1Driver> drivers = new ArrayList<Formula1Driver>();
 
     // collection of the championship races
@@ -63,7 +63,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
             else if (choice == 1) {formula1CM.addDriver();}
             else if (choice == 2) {formula1CM.deleteDriver();}
             else if (choice == 3) {formula1CM.changeDriverTeam();}
-            else if (choice == 4) {new Formula1TableSwing(formula1CM.sortByPointsAndTimesFirst());} // not needed
+            else if (choice == 4) {new Formula1TableSwing(formula1CM);} 
             else if (choice == 5) {formula1CM.addRace();}
             else if (choice == 6) {formula1CM.displayStatistics();}
             else if (choice == 7) {formula1CM.displayTable();}

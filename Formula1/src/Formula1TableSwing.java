@@ -1,23 +1,47 @@
 import java.util.ArrayList;
-
+import java.awt.event.*;
+import java.awt.Color;
 import javax.swing.*;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+
+class MyActionListener implements ActionListener {
+    private int i = 1;
+    JFrame frame;
+    Formula1ChampionshipManager formula1CM;
+
+    public MyActionListener(JFrame f, Formula1ChampionshipManager formula1CM) {
+        this.frame = f; 
+        this.formula1CM = formula1CM;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if ("simulateRace".equals(e.getActionCommand())) {
+            this.formula1CM.addRace();
+            new Formula1TableSwing(formula1CM);
+        }
+        // System.out.println("Pressed Button " + i++ + "th time!");
+        // if (i % 2 == 0)
+        //     frame.getContentPane().setBackground(Color.red);
+        // else
+        //     frame.getContentPane().setBackground(Color.white);
+        // } 
+    }
+
+}
 
 public class Formula1TableSwing extends JPanel {
 
-    // frame
-    JFrame f;
-    // Table
-    JTable j;
- 
+    public JFrame frame;
+    public JTable table;
+    private Formula1ChampionshipManager formula1CM;
+
+
     // Constructor
-    public Formula1TableSwing(ArrayList<Formula1Driver> drivers)
-    {
-        // Frame initialization
-        f = new JFrame();
- 
-        // Frame Title
-        f.setTitle("Formula 1 Championship Table");
- 
+    public Formula1TableSwing(Formula1ChampionshipManager formula1CM) {
+        this.formula1CM = formula1CM;
+        frame = new JFrame();
+        frame.setTitle("Formula 1 Championship Table");
         String[] columnNames = {"Name",
                                 "Location",
                                 "Team",
@@ -26,96 +50,50 @@ public class Formula1TableSwing extends JPanel {
                                 "3rd positions",
                                 "Total Points",
                                 "Races attended"};
-                                
         int columnCount = columnNames.length;
-        int rowCount = drivers.size();
-        Object[][] data = getDriversData(rowCount, columnCount, drivers);
- 
+        int rowCount = formula1CM.drivers.size();
+        Object[][] data = getDriversData(rowCount, columnCount, formula1CM.drivers); 
         // Initializing the JTable
-        j = new JTable(data, columnNames);
-        j.setBounds(30, 40, 200, 300);
- 
-        // adding it to JScrollPane
-        JScrollPane sp = new JScrollPane(j);
-        f.add(sp);
-        // Frame Size
-        f.setSize(500, 200);
-        // Frame Visible = true
-        f.setVisible(true);
+        table = new JTable(data, columnNames);
+
+        // Create a table sorter
+        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
+        table.setRowSorter(sorter);
+        ArrayList<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+        // Sort by points
+        sortKeys.add(new RowSorter.SortKey(6, SortOrder.DESCENDING));
+        // Sort by number of first places
+        sortKeys.add(new RowSorter.SortKey(3, SortOrder.DESCENDING));
+        sorter.setSortKeys(sortKeys);
+        table.setBounds(30, 40, 600, 300);
+
+        simulateRaceButton();
+
+         // adding it to JScrollPane
+        JScrollPane scrollPane = new JScrollPane(table);
+        frame.add(scrollPane);
+        frame.setSize(800, 400);
+        frame.setVisible(true);
+    }
+
+    private void simulateRaceButton() {
+        JButton simulateRaceButton = new JButton("Simulate race");
+        simulateRaceButton.setActionCommand("simulateRace");
+        JPanel jp = new JPanel();
+        jp.setBackground(Color.white);
+        // set the content pane to be the newly created JPanel
+        frame.setContentPane(jp);
+        frame.getContentPane().add(simulateRaceButton);
+        // register an event handler for frame events
+        simulateRaceButton.addActionListener(new MyActionListener(frame, formula1CM));
+        frame.setSize(400, 400);
+        frame.setVisible(true);
     }
 
     
-//     public Formula1TableSwing(ArrayList<Formula1Driver> drivers) {
-//         // String[] columnNames = {"Name",
-//         //                         "Location",
-//         //                         "Team",
-//         //                         // "1st positions",
-//         //                         // "2nd positions",
-//         //                         // "3rd positions",
-//         //                         "Total Points",
-//         //                         "Races attended"};
-//         // int columnCount = columnNames.length;
-//         // int rowCount = drivers.size();
-//         // // Object[][] data = getDriversData(rowCount, columnCount, drivers);
-//         // Object[][] data = {
-//         //     {"John", "Smith", "Manager",
-//         //       new Integer(35), new Integer(40000)},
-//         //     {"Tom", "Bubble", "Developer",
-//         //       new Integer(22), new Integer(22000)},
-//         //     {"Helen", "Hitchcock", "Project Leader",
-//         //       new Integer(30), new Integer(34000)},
-//         //     {"Kate", "Silva", "Receptionist",
-//         //       new Integer(20), new Integer(18000)},
-//         //     {"Susie", "White", "Developer",
-//         //       new Integer(25), new Integer(25000)}
-//         // };
-
-//         // final JTable table = new JTable(data, columnNames);
-//         // table.setFillsViewportHeight(true);
-//         // //Create the scroll pane and add the table to it.
-//         // JScrollPane scrollPane = new JScrollPane(table);
-//         // //Add the scroll pane to this panel.
-//         // add(scrollPane);
-
-//         String[] columnNames = {"First Name",
-//                                 "Last Name",
-//                                 "Position",
-//                                 "Age",
-//                                 "Salary"};
-//         Object[][] data = {
-//                 {"John", "Smith", "Manager",
-//                 new Integer(35), new Integer(40000)},
-//                 {"Tom", "Bubble", "Developer",
-//                 new Integer(22), new Integer(22000)},
-//                 {"Helen", "Hitchcock", "Project Leader",
-//                 new Integer(30), new Integer(34000)},
-//                 {"Kate", "Silva", "Receptionist",
-//                 new Integer(20), new Integer(18000)},
-//                 {"Susie", "White", "Developer",
-//                 new Integer(25), new Integer(25000)}
-//         };
-//         final JTable table = new JTable(data, columnNames);
-//         table.setFillsViewportHeight(true);
-//         //Create the scroll pane and add the table to it.
-//         JScrollPane scrollPane = new JScrollPane(table);
-//         //Add the scroll pane to this panel.
-//         add(scrollPane);
-//     }
-
-
-//     public static void createAndShowGUI(ArrayList<Formula1Driver> drivers) {
-//         // Create the frame window
-//         JFrame frame = new JFrame("Formula 1 Championship Standings"); 
-//         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//         // Create and set up the content pane.
-//         Formula1TableSwing newContentPane = new Formula1TableSwing(drivers); 
-//         newContentPane.setOpaque(true); // content panes must be opaque frame.setContentPane(newContentPane);
-//         // Display the window.
-//         frame.pack();
-//         frame.setVisible(true);
-//     }
-
-    
+    /*
+        Gets the drivers information from the Formula 1 Chamionship Manger
+    */
     private Object getValueAt(int row, int col, ArrayList<Formula1Driver> drivers) {
         Object temp = null;
         if (col == 0) {
@@ -146,6 +124,9 @@ public class Formula1TableSwing extends JPanel {
     }
 
 
+    /*
+        Obtains the data to provide to the JTable
+    */
     private Object[][] getDriversData(int nRows, int nCols, ArrayList<Formula1Driver> drivers) {
         Object[][] data = new Object[nRows][nCols];
         for (int i = 0; i<nRows; i++) {

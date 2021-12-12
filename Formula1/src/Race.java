@@ -11,7 +11,7 @@ public class Race {
     */
     public Race(ArrayList<Formula1Driver> drivers) {
         this.standings = new ArrayList<Formula1Driver>(drivers);
-        Collections.shuffle(this.standings);
+        simulate();
         //TODO: input date
         this.date = "2021-01-01";
         // displayStandings();
@@ -54,5 +54,7 @@ public class Race {
     }
 
 
-    public void simulate() {}
+    public void simulate() {
+        Collections.shuffle(this.standings);
+    }
 }
