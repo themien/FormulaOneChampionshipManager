@@ -70,11 +70,11 @@ class TextSearchActionListener implements ActionListener {
                 Formula1Driver driver = this.formula1CM.driverFindByName(searchString);
                 // create a DriverRaces model from driver and formula1CM
                 DriverRaces driverRaces = new DriverRaces(driver, formula1CM);
-
+                // display the model on a table
                 JTable testTable = new JTable();
                 testTable.setModel(new DriverRacesTableModel(driverRaces.driverRaces));
                 JScrollPane testSC = new JScrollPane(testTable);
-                // display the model on a table
+                // TODO: make this frame nicer
                 JFrame testFrame = new JFrame();
                 testFrame.add(testSC);
                 testFrame.setSize(1200, 600);

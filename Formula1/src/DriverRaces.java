@@ -8,7 +8,7 @@ public class DriverRaces {
         for (int i = 0; i<formula1CM.races.size(); i++) {
             Race race = formula1CM.races.get(i);
             if (race.getStandings().indexOf(driver) != -1) {
-                driverRaces.add(new DriverRace(race.getDate(), race.getStandings().indexOf(driver)));
+                driverRaces.add(new DriverRace(race.getDate(), 1 + race.getStandings().indexOf(driver)));
             }
         }
     }
