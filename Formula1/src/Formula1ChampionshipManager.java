@@ -48,7 +48,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
     public static void main(String[] args) throws Exception {
 
         Formula1ChampionshipManager formula1CM = new Formula1ChampionshipManager();
-        formula1CM.autoLoadData(); /////////////////////////////////////////////////////////////////////////////
+        formula1CM.autoLoadData(); 
 
         Menu.showMenu();
         int choice = 1;

@@ -56,25 +56,30 @@ public class Formula1ChampionshipGUI {
         // creating a frame
         this.frame = new JFrame();
         this.frame.setTitle("Formula 1 Championship GUI");
-        // creating a panel to hold the Buttons
-        JPanel jp = new JPanel();
-        jp.setBackground(Color.white);
-        this.panel = jp;
-        this.frame.setContentPane(jp);
 
+        // creating a panel to hold the Buttons
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setBackground(Color.white);
+        this.panel = buttonsPanel;
+        this.frame.setContentPane(buttonsPanel);
+
+        // Jtable with formula 1 Championship standings
         this.formula1Table = new JTable();
         this.addFormula1Table();
+        JScrollPane formula1TablePane = new JScrollPane(formula1Table);
+        formula1TablePane.setBorder(BorderFactory.createTitledBorder("Formula 1 Championship Table"));
+        this.frame.add(formula1TablePane);
 
+        // JTable with last race details
         this.raceTable = new JTable();
         this.addRaceTable();
+        JScrollPane raceTablePane = new JScrollPane(raceTable);
+        raceTablePane.setBorder(BorderFactory.createTitledBorder("Last race standings"));
+        this.frame.add(raceTablePane);
 
         this.simulateRaceButton();
         this.simulateRaceButtonWithProbabilities();
 
-        JScrollPane formula1TablePane = new JScrollPane(formula1Table);
-        JScrollPane raceTablePane = new JScrollPane(raceTable);
-        this.frame.add(formula1TablePane);
-        this.frame.add(raceTablePane);
         this.frame.setSize(1800, 1400);
         this.frame.setVisible(true);
 
