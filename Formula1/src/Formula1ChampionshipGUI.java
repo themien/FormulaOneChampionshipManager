@@ -8,23 +8,31 @@ import javax.swing.table.TableRowSorter;
 class MyActionListener implements ActionListener {
     private int i = 1;
     private JFrame frame;
-    public JTable table;
+    public JTable formula1Table;
+    public JTable raceTable;
     Formula1ChampionshipManager formula1CM;
 
-    public MyActionListener(JFrame f, JTable t, Formula1ChampionshipManager formula1CM) {
+    public MyActionListener(JFrame f, JTable formula1Table, JTable raceTable, Formula1ChampionshipManager formula1CM) {
         this.frame = f;
         this.formula1CM = formula1CM;
-        this.table = t;
+        this.formula1Table = formula1Table;
+        this.raceTable = raceTable;
     }
 
     public void actionPerformed(ActionEvent e) {
         if ("simulateRace".equals(e.getActionCommand())) {
-            this.formula1CM.addRace();
-            this.table.setModel(new Formula1ChampionshipTableModel(this.formula1CM.drivers));
+
+            Race race = new Race(this.formula1CM.drivers);
+            this.formula1CM.addRace(race);
+
+            this.formula1Table.setModel(new Formula1ChampionshipTableModel(this.formula1CM.drivers));
+            this.raceTable.setModel(new RaceTableModel(race));
             // TODO: sort the updated datamodel
+
         } else if ("simulateRaceProb".equals(e.getActionCommand())) {
-            this.formula1CM.addRace();
-            this.table.setModel(new Formula1ChampionshipTableModel(this.formula1CM.drivers));
+            Race race = new Race(this.formula1CM.drivers);//TODO:.simulateWithWeights();
+            this.formula1CM.addRace(race);
+            this.formula1Table.setModel(new Formula1ChampionshipTableModel(this.formula1CM.drivers));
         }
         // System.out.println("Pressed Button " + i++ + "th time!");
         // if (i % 2 == 0)
@@ -67,7 +75,7 @@ public class Formula1ChampionshipGUI {
         JScrollPane raceTablePane = new JScrollPane(raceTable);
         this.frame.add(formula1TablePane);
         this.frame.add(raceTablePane);
-        this.frame.setSize(800, 400);
+        this.frame.setSize(1800, 1400);
         this.frame.setVisible(true);
 
     }
@@ -89,8 +97,9 @@ public class Formula1ChampionshipGUI {
 
     private void addRaceTable() {
         // TODO:check if there is a race yet first
+        // TODO: change to get selected race
         Race race = this.formula1CM.races.get(0);
-        // System.out.println(race);//////////////////////////////////
+        // System.out.println(race.getStandings());//////////////////////////////////
         RaceTableModel model = new RaceTableModel(race);
         this.raceTable.setModel(model);
     }
@@ -100,7 +109,7 @@ public class Formula1ChampionshipGUI {
         simulateRaceButton.setActionCommand("simulateRace");
         this.frame.getContentPane().add(simulateRaceButton);
         // register an event handler for frame events
-        simulateRaceButton.addActionListener(new MyActionListener(frame, this.formula1Table, formula1CM));
+        simulateRaceButton.addActionListener(new MyActionListener(frame, this.formula1Table, this.raceTable, formula1CM));
         // this.frame.setSize(400, 400);
         // this.frame.setVisible(true);
     }
@@ -111,7 +120,7 @@ public class Formula1ChampionshipGUI {
         simulateRaceButtonProb.setActionCommand("simulateRaceProb");
         this.frame.getContentPane().add(simulateRaceButtonProb);
         // register an event handler for frame events
-        simulateRaceButtonProb.addActionListener(new MyActionListener(frame, this.formula1Table, formula1CM));
+        simulateRaceButtonProb.addActionListener(new MyActionListener(frame, this.formula1Table, this.raceTable, formula1CM));
         // this.frame.setSize(400, 400);
         // this.frame.setVisible(true);
     }

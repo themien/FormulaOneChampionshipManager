@@ -73,6 +73,7 @@ public class Race {
 
 
     public void simulateWithWeights() {
+        //TODO:The rest of the positions (2–10) are determined completely randomly
         Collections.shuffle(this.standings);
         ArrayList<Formula1Driver> driversStandings = new ArrayList<Formula1Driver>(20);
         Random r = new Random();

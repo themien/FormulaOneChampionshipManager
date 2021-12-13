@@ -1,5 +1,5 @@
 
-import java.util.ArrayList;
+
 import javax.swing.table.AbstractTableModel;
 
 
@@ -14,12 +14,12 @@ public class RaceTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return 10;
+        return race.getStandings().size();
     }
 
     @Override
     public int getColumnCount() {
-        return 2    ;
+        return 2;
     }
 
     @Override
