@@ -38,6 +38,9 @@ class MyActionListener implements ActionListener {
             Race race = new Race(this.formula1CM.drivers);//TODO:.simulateWithWeights();
             this.formula1CM.addRace(race);
             this.formula1Table.setModel(new Formula1ChampionshipTableModel(this.formula1CM.drivers));
+
+        } else if ("searchDriverRaces".equals(e.getActionCommand())) {
+            
         }
         // System.out.println("Pressed Button " + i++ + "th time!");
         // if (i % 2 == 0)
@@ -45,6 +48,42 @@ class MyActionListener implements ActionListener {
         // else
         // frame.getContentPane().setBackground(Color.white);
         // }
+    }
+
+}
+
+class TextSearchActionListener implements ActionListener {
+    private JFrame frame;
+    private JTextField textBox;
+    private Formula1ChampionshipManager formula1CM;  
+
+    public TextSearchActionListener(JFrame f, JTextField textBox, Formula1ChampionshipManager formula1CM) {
+        this.frame = f;
+        this.textBox = textBox;
+        this.formula1CM = formula1CM;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if ("searchDriverRaces".equals(e.getActionCommand())) {
+            String searchString = this.textBox.getText();
+            try {
+                Formula1Driver driver = this.formula1CM.driverFindByName(searchString);
+                // create a DriverRaces model from driver and formula1CM
+                DriverRaces driverRaces = new DriverRaces(driver, formula1CM);
+
+                JTable testTable = new JTable();
+                testTable.setModel(new DriverRacesTableModel(driverRaces.driverRaces));
+                JScrollPane testSC = new JScrollPane(testTable);
+                // display the model on a table
+                JFrame testFrame = new JFrame();
+                testFrame.add(testSC);
+                testFrame.setSize(1200, 600);
+                testFrame.setVisible(true);
+            } catch (Exception err) {
+                //TODO: handle exception
+            }
+            
+            }
     }
 
 }
@@ -144,7 +183,7 @@ public class Formula1ChampionshipGUI {
         simulateRaceButton.setActionCommand("simulateRace");
         // this.frame.getContentPane().add(simulateRaceButton);
         p.add(simulateRaceButton);
-        simulateRaceButton.addActionListener(new MyActionListener(frame, this.formula1Table, this.allRacesTable, this.raceTable, formula1CM));
+        simulateRaceButton.addActionListener(new MyActionListener(this.frame, this.formula1Table, this.allRacesTable, this.raceTable, formula1CM));
     }
 
 
@@ -152,8 +191,8 @@ public class Formula1ChampionshipGUI {
         JButton simulateRaceButtonProb = new JButton("Simulate race biased by starting position");
         simulateRaceButtonProb.setActionCommand("simulateRaceProb");
         // this.frame.getContentPane().add(simulateRaceButtonProb);
+        simulateRaceButtonProb.addActionListener(new MyActionListener(this.frame, this.formula1Table, this.allRacesTable, this.raceTable, formula1CM));
         p.add(simulateRaceButtonProb);
-        simulateRaceButtonProb.addActionListener(new MyActionListener(frame, this.formula1Table, this.allRacesTable, this.raceTable, formula1CM));
     }
 
 
@@ -161,6 +200,7 @@ public class Formula1ChampionshipGUI {
         JButton searchDriverRacesButton = new JButton("Search for driver races");
         searchDriverRacesButton.setActionCommand("searchDriverRaces");
         JTextField searchBox = new JTextField();
+        searchDriverRacesButton.addActionListener(new TextSearchActionListener(this.frame, searchBox, formula1CM));
         JPanel searchPanel = new JPanel(new GridLayout(1,1));
         searchPanel.add(searchBox);
         searchPanel.add(searchDriverRacesButton);
