@@ -6,13 +6,15 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 interface ChampionshipManager {
     public void addDriver();
     public void deleteDriver();
     public void changeDriverTeam();
-    // public void addRace();
+    public void addRace(Race race);
     public void displayStatistics();
     public void displayTable();
     public void saveAllData();
@@ -48,7 +50,7 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
     public static void main(String[] args) throws Exception {
 
         Formula1ChampionshipManager formula1CM = new Formula1ChampionshipManager();
-        formula1CM.autoLoadData(); 
+        formula1CM.autoLoadData();/////////////////////////////////////////////////////// 
 
         Menu.showMenu();
         int choice = 1;
@@ -64,7 +66,8 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
             else if (choice == 2) {formula1CM.deleteDriver();}
             else if (choice == 3) {formula1CM.changeDriverTeam();}
             else if (choice == 4) {new Formula1ChampionshipGUI(formula1CM);} 
-            // else if (choice == 5) {formula1CM.addRace();}
+            // TODO: input date from console
+            else if (choice == 5) {formula1CM.addRace(new Race(formula1CM.drivers));}
             else if (choice == 6) {formula1CM.displayStatistics();}
             else if (choice == 7) {formula1CM.displayTable();}
             else if (choice == 8) {formula1CM.saveAllData();}
@@ -120,18 +123,22 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
 
 
     private void loadRacesData() {
-        try { 
+        try {
             Scanner rf = new Scanner(new BufferedReader(new FileReader("data/races.data")));
             String fileRecord;
+
+            // Creating a date formatter
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             while (rf.hasNext()) {                
                 fileRecord = rf.nextLine(); 
                 String[] parts = fileRecord.split(",");
-                String date = parts[0];
+                //convert String to LocalDate
+                LocalDate localDate = LocalDate.parse(parts[0], formatter);
                 ArrayList<Formula1Driver> standings = new ArrayList<>(maxDrivers);
                 for (int i=1; i<nOfDrivers + 1; i++) {
                     standings.add(driverFindByName(parts[i]));
                 }
-                Race race = new Race(date, standings);
+                Race race = new Race(localDate, standings);
                 this.races.add(race);
             }
             rf.close();
@@ -265,7 +272,7 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
     public void saveDriversData() {
         // TODO: needs to also save races data, not only drivers
         try {
-            FileWriter wf = new FileWriter("Formula1/data/drivers.data");
+            FileWriter wf = new FileWriter("data/drivers.data");
             for (int i=0; i<nOfDrivers; i++) {
                 Formula1Driver driver = drivers.get(i);
                 wf.write(driver.getName() + "," +
@@ -287,9 +294,10 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
 
     public void saveRacesData() {
         try {
-            FileWriter wf = new FileWriter("Formula1/data/races.data");
+            FileWriter wf = new FileWriter("data/races.data");
             for (int i=0; i<races.size(); i++) {
                 Race race = races.get(i);
+                // TODO: chnge data save formatting
                 String recordToSave = race.getDate() + "," ;
                 for (int j=0; j<nOfDrivers; j++) {
                     recordToSave = recordToSave + race.getStandings().get(j).getName();

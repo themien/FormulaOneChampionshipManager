@@ -1,10 +1,11 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
 public class Race {
 
-    private String date;
+    private LocalDate date;
     private ArrayList<Formula1Driver> standings;
 
     /*
@@ -14,17 +15,18 @@ public class Race {
         // TODO: assign standings manually
         this.standings = new ArrayList<Formula1Driver>(drivers);
         simulate(); //////////////////////////////////////////////////////
-        //TODO: input date
-        this.date = "2021-01-01";
+        // Assign date randomly
+        RandomDate rd = new RandomDate(LocalDate.of(2021, 1, 1), LocalDate.of(2022, 8, 31));
+        this.date = rd.nextDate();
         // displayStandings();
     }
 
-    public Race(String date, ArrayList<Formula1Driver> drivers) {
+    public Race(LocalDate date, ArrayList<Formula1Driver> drivers) {
         this.standings = new ArrayList<Formula1Driver>(drivers);
         this.date = date;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return this.date;
     }
 
@@ -67,6 +69,7 @@ public class Race {
 
 
     public void simulate() {
+        // TODO: to take arraylist of formula 1 drivers
         Collections.shuffle(this.standings);
     }
 

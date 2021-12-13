@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.awt.event.*;
 import java.awt.Color;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import javax.swing.*;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -59,39 +61,42 @@ public class Formula1ChampionshipGUI {
         this.formula1CM = formula1CM;
         // creating a frame
         this.frame = new JFrame();
+        this.frame.setLayout(new BorderLayout());
         this.frame.setTitle("Formula 1 Championship GUI");
 
         // creating a panel to hold the Buttons
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setBackground(Color.white);
         this.panel = buttonsPanel;
-        this.frame.setContentPane(buttonsPanel);
+        // this.frame.setContentPane(buttonsPanel);
+        this.frame.add(buttonsPanel, BorderLayout.NORTH);
 
         // Jtable with formula 1 Championship standings
         this.formula1Table = new JTable();
         this.addFormula1Table();
         JScrollPane formula1TablePane = new JScrollPane(formula1Table);
         formula1TablePane.setBorder(BorderFactory.createTitledBorder("Formula 1 Championship Table"));
-        this.frame.add(formula1TablePane);
+        this.frame.add(formula1TablePane, BorderLayout.WEST);
 
         // JTable with last race details
         this.raceTable = new JTable();
         this.addRaceTable();
         JScrollPane raceTablePane = new JScrollPane(raceTable);
         raceTablePane.setBorder(BorderFactory.createTitledBorder("Last race standings"));
-        this.frame.add(raceTablePane);
+        this.frame.add(raceTablePane, BorderLayout.CENTER);
 
         // JTable with all races
         this.allRacesTable = new JTable();
         this.addAllRacesTable();
         JScrollPane allRacesTablePane = new JScrollPane(allRacesTable);
         allRacesTablePane.setBorder(BorderFactory.createTitledBorder("All races"));
-        this.frame.add(allRacesTablePane);
+        this.frame.add(allRacesTablePane, BorderLayout.EAST);
 
-        this.simulateRaceButton();
-        this.simulateRaceButtonWithProbabilities();
+        this.simulateRaceButton(buttonsPanel);
+        this.simulateRaceButtonWithProbabilities(buttonsPanel);
+        this.searchForDriverRacesButton();
 
-        this.frame.setSize(1800, 1400);
+        this.frame.setSize(1200, 600);
         this.frame.setVisible(true);
 
     }
@@ -134,25 +139,32 @@ public class Formula1ChampionshipGUI {
     }
 
 
-    private void simulateRaceButton() {
+    private void simulateRaceButton(JPanel p) {
         JButton simulateRaceButton = new JButton("Simulate race");
         simulateRaceButton.setActionCommand("simulateRace");
-        this.frame.getContentPane().add(simulateRaceButton);
-        // register an event handler for frame events
+        // this.frame.getContentPane().add(simulateRaceButton);
+        p.add(simulateRaceButton);
         simulateRaceButton.addActionListener(new MyActionListener(frame, this.formula1Table, this.allRacesTable, this.raceTable, formula1CM));
-        // this.frame.setSize(400, 400);
-        // this.frame.setVisible(true);
     }
 
 
-    private void simulateRaceButtonWithProbabilities() {
+    private void simulateRaceButtonWithProbabilities(JPanel p) {
         JButton simulateRaceButtonProb = new JButton("Simulate race biased by starting position");
         simulateRaceButtonProb.setActionCommand("simulateRaceProb");
-        this.frame.getContentPane().add(simulateRaceButtonProb);
-        // register an event handler for frame events
+        // this.frame.getContentPane().add(simulateRaceButtonProb);
+        p.add(simulateRaceButtonProb);
         simulateRaceButtonProb.addActionListener(new MyActionListener(frame, this.formula1Table, this.allRacesTable, this.raceTable, formula1CM));
-        // this.frame.setSize(400, 400);
-        // this.frame.setVisible(true);
+    }
+
+
+    private void searchForDriverRacesButton() {
+        JButton searchDriverRacesButton = new JButton("Search for driver races");
+        searchDriverRacesButton.setActionCommand("searchDriverRaces");
+        JTextField searchBox = new JTextField();
+        JPanel searchPanel = new JPanel(new GridLayout(1,1));
+        searchPanel.add(searchBox);
+        searchPanel.add(searchDriverRacesButton);
+        this.frame.add(searchPanel, BorderLayout.SOUTH);
     }
 
 }

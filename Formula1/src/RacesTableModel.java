@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
@@ -22,7 +23,7 @@ public class RacesTableModel extends AbstractTableModel {
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         switch (columnIndex) {
-            case 0: return String.class;
+            case 0: return LocalDate.class;
             case 1: return Object.class;
         }
         return Object.class;
