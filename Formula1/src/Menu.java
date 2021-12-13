@@ -27,6 +27,7 @@ public class Menu {
         int choice;
         System.out.println("Press 0 to show the menu.");
         System.out.print("Please enter an option: ");
+        // TODO: error if string is inputed
         choice = input.nextInt();
         System.out.println();
          

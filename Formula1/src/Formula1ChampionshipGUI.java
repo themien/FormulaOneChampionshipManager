@@ -21,6 +21,10 @@ class MyActionListener implements ActionListener {
         if ("simulateRace".equals(e.getActionCommand())) {
             this.formula1CM.addRace();
             this.table.setModel(new Formula1ChampionshipTableModel(this.formula1CM.drivers));
+            // TODO: sort the updated datamodel
+        } else if ("simulateRaceProb".equals(e.getActionCommand())) {
+            this.formula1CM.addRace();
+            this.table.setModel(new Formula1ChampionshipTableModel(this.formula1CM.drivers));
         }
         // System.out.println("Pressed Button " + i++ + "th time!");
         // if (i % 2 == 0)
@@ -34,7 +38,8 @@ class MyActionListener implements ActionListener {
 
 public class Formula1ChampionshipGUI {
     public JFrame frame;
-    public JTable table;
+    public JTable formula1Table;
+    public JTable raceTable;
     public JPanel panel;
     private Formula1ChampionshipManager formula1CM;
 
@@ -49,32 +54,45 @@ public class Formula1ChampionshipGUI {
         this.panel = jp;
         this.frame.setContentPane(jp);
 
-        // TODO: this.table should be populated before simulateraceButton()
-        // this.table = new Formula1ChamipionshipStandingsTable(formula1CM).getFormula1DriversTable();
+        this.formula1Table = new JTable();
+        this.addFormula1Table();
+
+        this.raceTable = new JTable();
+        this.addRaceTable();
+
+        this.simulateRaceButton();
+        this.simulateRaceButtonWithProbabilities();
+
+        JScrollPane formula1TablePane = new JScrollPane(formula1Table);
+        JScrollPane raceTablePane = new JScrollPane(raceTable);
+        this.frame.add(formula1TablePane);
+        this.frame.add(raceTablePane);
+        this.frame.setSize(800, 400);
+        this.frame.setVisible(true);
+
+    }
+
+    private void addFormula1Table() {
         Formula1ChampionshipTableModel model = new Formula1ChampionshipTableModel(this.formula1CM.drivers);
-        this.table = new JTable();
-        this.table.setModel(model);
+        this.formula1Table.setModel(model);
         // Create a table sorter
-        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(this.table.getModel());
-        this.table.setRowSorter(sorter);
+        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(this.formula1Table.getModel());
+        this.formula1Table.setRowSorter(sorter);
         ArrayList<RowSorter.SortKey> sortKeys = new ArrayList<>(15);
         // Sort by points
         sortKeys.add(new RowSorter.SortKey(6, SortOrder.DESCENDING));
         // Sort by number of first places
         sortKeys.add(new RowSorter.SortKey(3, SortOrder.DESCENDING));
         sorter.setSortKeys(sortKeys);
+    }
 
-        simulateRaceButton();
-        // TODO: this.table should be populated before simulateraceButton()
-        // this.table = new Formula1ChamipionshipStandingsTable(formula1CM).getFormula1DriversTable();
-        // // adding it to JScrollPane
-        
-        // System.out.println(this.table); //////////////////////
-        JScrollPane tablePane = new JScrollPane(table);
-        this.frame.add(tablePane);
-        this.frame.setSize(800, 400);
-        this.frame.setVisible(true);
 
+    private void addRaceTable() {
+        // TODO:check if there is a race yet first
+        Race race = this.formula1CM.races.get(0);
+        // System.out.println(race);//////////////////////////////////
+        RaceTableModel model = new RaceTableModel(race);
+        this.raceTable.setModel(model);
     }
 
     private void simulateRaceButton() {
@@ -82,7 +100,18 @@ public class Formula1ChampionshipGUI {
         simulateRaceButton.setActionCommand("simulateRace");
         this.frame.getContentPane().add(simulateRaceButton);
         // register an event handler for frame events
-        simulateRaceButton.addActionListener(new MyActionListener(frame, this.table, formula1CM));
+        simulateRaceButton.addActionListener(new MyActionListener(frame, this.formula1Table, formula1CM));
+        // this.frame.setSize(400, 400);
+        // this.frame.setVisible(true);
+    }
+
+
+    private void simulateRaceButtonWithProbabilities() {
+        JButton simulateRaceButtonProb = new JButton("Simulate race biased by starting position");
+        simulateRaceButtonProb.setActionCommand("simulateRaceProb");
+        this.frame.getContentPane().add(simulateRaceButtonProb);
+        // register an event handler for frame events
+        simulateRaceButtonProb.addActionListener(new MyActionListener(frame, this.formula1Table, formula1CM));
         // this.frame.setSize(400, 400);
         // this.frame.setVisible(true);
     }

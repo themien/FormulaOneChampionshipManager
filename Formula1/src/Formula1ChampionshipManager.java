@@ -48,7 +48,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
     public static void main(String[] args) throws Exception {
 
         Formula1ChampionshipManager formula1CM = new Formula1ChampionshipManager();
-        formula1CM.autoLoadData();
+        formula1CM.autoLoadData(); /////////////////////////////////////////////////////////////////////////////
 
         Menu.showMenu();
         int choice = 1;
@@ -90,6 +90,12 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
      * TODO: also load from races.data file
      */
     private void autoLoadData() {
+        loadDriversData();
+        loadRacesData();
+    }
+
+
+    private void loadDriversData() {
         try { 
             Scanner rf = new Scanner(new BufferedReader(new FileReader("Formula1/data/drivers.data")));
             String fileRecord;
@@ -106,7 +112,30 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
                 updateStateOnAdd(driver);
             }
             rf.close();
-            System.out.println("Formula 1 Championship data loaded.");
+            System.out.println("Drivers data loaded.");
+        } catch (IOException e) {
+            System.out.println("Error IOException is: " + e);
+        }
+    }
+
+
+    private void loadRacesData() {
+        try { 
+            Scanner rf = new Scanner(new BufferedReader(new FileReader("Formula1/data/races.data")));
+            String fileRecord;
+            while (rf.hasNext()) {                
+                fileRecord = rf.nextLine(); 
+                String[] parts = fileRecord.split(",");
+                String date = parts[0];
+                ArrayList<Formula1Driver> standings = new ArrayList<>(maxDrivers);
+                for (int i=1; i<nOfDrivers + 1; i++) {
+                    standings.add(driverFindByName(parts[i]));
+                }
+                Race race = new Race(date, standings);
+                this.races.add(race);
+            }
+            rf.close();
+            System.out.println("Races data loaded.");
         } catch (IOException e) {
             System.out.println("Error IOException is: " + e);
         }
@@ -258,14 +287,31 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
     }
 
     public void saveRacesData() {
-        // TODO:save races data
-        saveDriversData();
+        try {
+            FileWriter wf = new FileWriter("Formula1/data/races.data");
+            for (int i=0; i<races.size(); i++) {
+                Race race = races.get(i);
+                String recordToSave = race.getDate() + "," ;
+                for (int j=0; j<nOfDrivers; j++) {
+                    recordToSave = recordToSave + race.getStandings().get(j).getName();
+                    if (j == nOfDrivers - 1) {recordToSave += "\n";}
+                    else {recordToSave += ",";}
+                }
+                wf.write(recordToSave);
+            }
+            wf.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        System.out.println("Races data saved.");
     }
 
 
 
     public void saveAllData() {
         saveDriversData();
+        saveRacesData();
     }
 
 }

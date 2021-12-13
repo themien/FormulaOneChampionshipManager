@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class Race {
 
@@ -10,11 +11,17 @@ public class Race {
         This constructor just randomises the drivers array to get the standings
     */
     public Race(ArrayList<Formula1Driver> drivers) {
+        // TODO: assign standings manually
         this.standings = new ArrayList<Formula1Driver>(drivers);
-        simulate();
+        simulate(); //////////////////////////////////////////////////////
         //TODO: input date
         this.date = "2021-01-01";
         // displayStandings();
+    }
+
+    public Race(String date, ArrayList<Formula1Driver> drivers) {
+        this.standings = new ArrayList<Formula1Driver>(drivers);
+        this.date = date;
     }
 
     public String getDate() {
@@ -23,6 +30,11 @@ public class Race {
 
     public ArrayList<Formula1Driver> getStandings() {
         return this.standings;
+    }
+
+    public Formula1Driver getDriverByStanding(int standing) {
+        Formula1Driver driver = this.standings.get(standing);
+        return driver;    
     }
 
     public void displayStandings () {
@@ -57,4 +69,28 @@ public class Race {
     public void simulate() {
         Collections.shuffle(this.standings);
     }
+
+
+
+    public void simulateWithWeights() {
+        Collections.shuffle(this.standings);
+        ArrayList<Formula1Driver> driversStandings = new ArrayList<Formula1Driver>(20);
+        Random r = new Random();
+        for (int i=0; i<this.standings.size(); i++) {
+            //create a random number
+            int randomInt = r.nextInt(100) + 1;
+            if (randomInt < 41) {driversStandings.add(this.standings.remove(0));}
+            else if (randomInt <71) {driversStandings.add(this.standings.remove(1));}
+            else if (randomInt <81) {driversStandings.add(this.standings.remove(2));}
+            else if (randomInt <91) {driversStandings.add(this.standings.remove(3));}
+            else if (randomInt <93) {driversStandings.add(this.standings.remove(4));}
+            else if (randomInt <95) {driversStandings.add(this.standings.remove(5));}
+            else if (randomInt <97) {driversStandings.add(this.standings.remove(6));}
+            else if (randomInt <99) {driversStandings.add(this.standings.remove(7));}
+            else if (randomInt <101) {driversStandings.add(this.standings.remove(8));}
+        }
+        this.standings = driversStandings;
+    }
+
+
 }
