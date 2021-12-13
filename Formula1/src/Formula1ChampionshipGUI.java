@@ -3,6 +3,7 @@ import java.awt.event.*;
 import java.awt.Color;
 import javax.swing.*;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 class MyActionListener implements ActionListener {
     private int i = 1;
@@ -19,19 +20,7 @@ class MyActionListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if ("simulateRace".equals(e.getActionCommand())) {
             this.formula1CM.addRace();
-
-            // JScrollPane tablePane = new JScrollPane(this.table);
-            // this.frame.add(tablePane);  
             this.table.setModel(new Formula1ChampionshipTableModel(this.formula1CM.drivers));
-
-            // new Formula1ChamipionshipStandingsTable(this.formula1CM);
-
-            // JTable table = new Formula1ChamipionshipStandingsTable(this.formula1CM).getFormula1DriversTable();
-            // System.out.println(this.table);
-            // this.table = table;
-            
-            // this.table.setModel();
-            // this.frame.getContentPane().g
         }
         // System.out.println("Pressed Button " + i++ + "th time!");
         // if (i % 2 == 0)
@@ -59,11 +48,22 @@ public class Formula1ChampionshipGUI {
         jp.setBackground(Color.white);
         this.panel = jp;
         this.frame.setContentPane(jp);
+
         // TODO: this.table should be populated before simulateraceButton()
         // this.table = new Formula1ChamipionshipStandingsTable(formula1CM).getFormula1DriversTable();
         Formula1ChampionshipTableModel model = new Formula1ChampionshipTableModel(this.formula1CM.drivers);
         this.table = new JTable();
         this.table.setModel(model);
+        // Create a table sorter
+        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(this.table.getModel());
+        this.table.setRowSorter(sorter);
+        ArrayList<RowSorter.SortKey> sortKeys = new ArrayList<>(15);
+        // Sort by points
+        sortKeys.add(new RowSorter.SortKey(6, SortOrder.DESCENDING));
+        // Sort by number of first places
+        sortKeys.add(new RowSorter.SortKey(3, SortOrder.DESCENDING));
+        sorter.setSortKeys(sortKeys);
+
         simulateRaceButton();
         // TODO: this.table should be populated before simulateraceButton()
         // this.table = new Formula1ChamipionshipStandingsTable(formula1CM).getFormula1DriversTable();
