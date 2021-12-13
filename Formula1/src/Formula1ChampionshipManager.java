@@ -12,16 +12,16 @@ interface ChampionshipManager {
     public void addDriver();
     public void deleteDriver();
     public void changeDriverTeam();
-    public void addRace();
+    // public void addRace();
     public void displayStatistics();
     public void displayTable();
-    public void saveData();
+    public void saveAllData();
     public void autoLoadData();
 }
 
 
 
-public class Formula1ChampionshipManager {//implements ChampionshipManager{
+public class Formula1ChampionshipManager implements ChampionshipManager {
 
     // scanner instance to get user input
     public static Scanner input = new Scanner(System.in).useDelimiter("\n");
@@ -89,7 +89,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
      * Loads the Formula 1 Championship data from "drivers.data" file
      * TODO: also load from races.data file
      */
-    private void autoLoadData() {
+    public void autoLoadData() {
         loadDriversData();
         loadRacesData();
     }
@@ -97,7 +97,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
 
     private void loadDriversData() {
         try { 
-            Scanner rf = new Scanner(new BufferedReader(new FileReader("Formula1/data/drivers.data")));
+            Scanner rf = new Scanner(new BufferedReader(new FileReader("data/drivers.data")));
             String fileRecord;
             // does not check if file has more records than maxDrivers
             // not implemented as file save from program itslf, no user input
@@ -121,7 +121,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
 
     private void loadRacesData() {
         try { 
-            Scanner rf = new Scanner(new BufferedReader(new FileReader("Formula1/data/races.data")));
+            Scanner rf = new Scanner(new BufferedReader(new FileReader("data/races.data")));
             String fileRecord;
             while (rf.hasNext()) {                
                 fileRecord = rf.nextLine(); 

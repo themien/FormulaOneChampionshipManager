@@ -9,13 +9,15 @@ class MyActionListener implements ActionListener {
     private int i = 1;
     private JFrame frame;
     public JTable formula1Table;
+    public JTable allRacesTable;
     public JTable raceTable;
     Formula1ChampionshipManager formula1CM;
 
-    public MyActionListener(JFrame f, JTable formula1Table, JTable raceTable, Formula1ChampionshipManager formula1CM) {
+    public MyActionListener(JFrame f, JTable formula1Table, JTable allRacesTable, JTable raceTable, Formula1ChampionshipManager formula1CM) {
         this.frame = f;
         this.formula1CM = formula1CM;
         this.formula1Table = formula1Table;
+        this.allRacesTable = allRacesTable;
         this.raceTable = raceTable;
     }
 
@@ -26,6 +28,7 @@ class MyActionListener implements ActionListener {
             this.formula1CM.addRace(race);
 
             this.formula1Table.setModel(new Formula1ChampionshipTableModel(this.formula1CM.drivers));
+            this.allRacesTable.setModel(new RacesTableModel(this.formula1CM.races));
             this.raceTable.setModel(new RaceTableModel(race));
             // TODO: sort the updated datamodel
 
@@ -136,7 +139,7 @@ public class Formula1ChampionshipGUI {
         simulateRaceButton.setActionCommand("simulateRace");
         this.frame.getContentPane().add(simulateRaceButton);
         // register an event handler for frame events
-        simulateRaceButton.addActionListener(new MyActionListener(frame, this.formula1Table, this.raceTable, formula1CM));
+        simulateRaceButton.addActionListener(new MyActionListener(frame, this.formula1Table, this.allRacesTable, this.raceTable, formula1CM));
         // this.frame.setSize(400, 400);
         // this.frame.setVisible(true);
     }
@@ -147,7 +150,7 @@ public class Formula1ChampionshipGUI {
         simulateRaceButtonProb.setActionCommand("simulateRaceProb");
         this.frame.getContentPane().add(simulateRaceButtonProb);
         // register an event handler for frame events
-        simulateRaceButtonProb.addActionListener(new MyActionListener(frame, this.formula1Table, this.raceTable, formula1CM));
+        simulateRaceButtonProb.addActionListener(new MyActionListener(frame, this.formula1Table, this.allRacesTable, this.raceTable, formula1CM));
         // this.frame.setSize(400, 400);
         // this.frame.setVisible(true);
     }
