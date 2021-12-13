@@ -25,14 +25,14 @@ class MyActionListener implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if ("simulateRace".equals(e.getActionCommand())) {
-            Race race = new Race(this.formula1CM.drivers);
+            Race race = new Race(this.formula1CM.drivers, false);
             this.formula1CM.addRace(race);
             this.raceTable.setModel(new RaceTableModel(race));
             updateTables();
             // TODO: sort the updated datamodel
 
         } else if ("simulateRaceProb".equals(e.getActionCommand())) {
-            Race race = new Race(this.formula1CM.drivers);//TODO:.simulateWithWeights();
+            Race race = new Race(this.formula1CM.drivers, true);//TODO:.simulateWithWeights();
             this.formula1CM.addRace(race);
             this.raceTable.setModel(new RaceTableModel(race));
             updateTables();
@@ -43,13 +43,8 @@ class MyActionListener implements ActionListener {
             this.formula1Table.setModel(new Formula1ChampionshipTableModel(this.formula1CM.drivers));
             this.allRacesTable.setModel(new RacesTableModel(this.formula1CM.races));
     }
-        // System.out.println("Pressed Button " + i++ + "th time!");
-        // if (i % 2 == 0)
-        // frame.getContentPane().setBackground(Color.red);
-        // else
-        // frame.getContentPane().setBackground(Color.white);
-        // }
-    }
+
+}
 
 
 

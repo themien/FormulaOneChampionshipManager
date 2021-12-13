@@ -67,7 +67,7 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
             else if (choice == 3) {formula1CM.changeDriverTeam();}
             else if (choice == 4) {new Formula1ChampionshipGUI(formula1CM);} 
             // TODO: input date from console
-            else if (choice == 5) {formula1CM.addRace(new Race(formula1CM.drivers));}
+            else if (choice == 5) {formula1CM.addRace(new Race(formula1CM.drivers, false));}
             else if (choice == 6) {formula1CM.displayStatistics();}
             else if (choice == 7) {formula1CM.displayTable();}
             else if (choice == 8) {formula1CM.saveAllData();}
@@ -240,8 +240,8 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
 
     public void addRace(Race race) {
         races.add(race);
-        // update formula 1 drivers data
         ArrayList<Formula1Driver> standings = race.getStandings();
+        // update formula 1 drivers data
         for (int i=0; i<standings.size(); i++) {
             Formula1Driver driver = driverFindByName(standings.get(i).name);
             driver.updateStatistics(i+1, Race.assignPoints(i+1));

@@ -11,10 +11,13 @@ public class Race {
     /*
         This constructor just randomises the drivers array to get the standings
     */
-    public Race(ArrayList<Formula1Driver> drivers) {
+    public Race(ArrayList<Formula1Driver> drivers, boolean isWeighted) {
         // TODO: assign standings manually
         this.standings = new ArrayList<Formula1Driver>(drivers);
-        simulate(); //////////////////////////////////////////////////////
+        this.simulate(); 
+        if (isWeighted) {
+            this.simulateWithWeights();
+        }
         // Assign date randomly
         RandomDate rd = new RandomDate(LocalDate.of(2021, 1, 1), LocalDate.of(2022, 8, 31));
         this.date = rd.nextDate();
@@ -23,6 +26,10 @@ public class Race {
 
     public Race(LocalDate date, ArrayList<Formula1Driver> drivers) {
         this.standings = new ArrayList<Formula1Driver>(drivers);
+        // this.simulate(); 
+        // if (isWeighted) {
+        //     this.simulateWithWeights();
+        // }
         this.date = date;
     }
 
@@ -69,31 +76,27 @@ public class Race {
 
 
     public void simulate() {
-        // TODO: to take arraylist of formula 1 drivers
         Collections.shuffle(this.standings);
     }
 
 
 
     public void simulateWithWeights() {
-        //TODO:The rest of the positions (2–10) are determined completely randomly
-        Collections.shuffle(this.standings);
-        ArrayList<Formula1Driver> driversStandings = new ArrayList<Formula1Driver>(20);
         Random r = new Random();
-        for (int i=0; i<this.standings.size(); i++) {
-            //create a random number
-            int randomInt = r.nextInt(100) + 1;
-            if (randomInt < 41) {driversStandings.add(this.standings.remove(0));}
-            else if (randomInt <71) {driversStandings.add(this.standings.remove(1));}
-            else if (randomInt <81) {driversStandings.add(this.standings.remove(2));}
-            else if (randomInt <91) {driversStandings.add(this.standings.remove(3));}
-            else if (randomInt <93) {driversStandings.add(this.standings.remove(4));}
-            else if (randomInt <95) {driversStandings.add(this.standings.remove(5));}
-            else if (randomInt <97) {driversStandings.add(this.standings.remove(6));}
-            else if (randomInt <99) {driversStandings.add(this.standings.remove(7));}
-            else if (randomInt <101) {driversStandings.add(this.standings.remove(8));}
-        }
-        this.standings = driversStandings;
+        int randomInt = r.nextInt(100) + 1;
+        Formula1Driver firstPlaced = this.standings.get(0);
+        if (randomInt < 41) {firstPlaced = this.standings.get(0);}
+        else if (randomInt <71) {firstPlaced = this.standings.get(1);}
+        else if (randomInt <81) {firstPlaced = this.standings.get(2);}
+        else if (randomInt <91) {firstPlaced = this.standings.get(3);}
+        else if (randomInt <93) {firstPlaced = this.standings.get(4);}
+        else if (randomInt <95) {firstPlaced = this.standings.get(5);;}
+        else if (randomInt <97) {firstPlaced = this.standings.get(6);}
+        else if (randomInt <99) {firstPlaced = this.standings.get(7);}
+        else if (randomInt <101) {firstPlaced = this.standings.get(8);}
+        // The rest of the positions (2–10) are determined completely randomly
+        Collections.shuffle(this.standings);
+        Collections.swap(this.standings, 0, this.standings.indexOf(firstPlaced));
     }
 
 
