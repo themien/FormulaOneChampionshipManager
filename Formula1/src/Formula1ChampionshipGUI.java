@@ -47,6 +47,7 @@ class MyActionListener implements ActionListener {
 public class Formula1ChampionshipGUI {
     public JFrame frame;
     public JTable formula1Table;
+    public JTable allRacesTable;
     public JTable raceTable;
     public JPanel panel;
     private Formula1ChampionshipManager formula1CM;
@@ -76,6 +77,13 @@ public class Formula1ChampionshipGUI {
         JScrollPane raceTablePane = new JScrollPane(raceTable);
         raceTablePane.setBorder(BorderFactory.createTitledBorder("Last race standings"));
         this.frame.add(raceTablePane);
+
+        // JTable with all races
+        this.allRacesTable = new JTable();
+        this.addAllRacesTable();
+        JScrollPane allRacesTablePane = new JScrollPane(allRacesTable);
+        allRacesTablePane.setBorder(BorderFactory.createTitledBorder("All races"));
+        this.frame.add(allRacesTablePane);
 
         this.simulateRaceButton();
         this.simulateRaceButtonWithProbabilities();
@@ -108,6 +116,20 @@ public class Formula1ChampionshipGUI {
         RaceTableModel model = new RaceTableModel(race);
         this.raceTable.setModel(model);
     }
+
+
+    private void addAllRacesTable() {
+        RacesTableModel model = new RacesTableModel(this.formula1CM.races);
+        this.allRacesTable.setModel(model);
+        // Create a table sorter
+        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(this.allRacesTable.getModel());
+        this.allRacesTable.setRowSorter(sorter);
+        ArrayList<RowSorter.SortKey> sortKeys = new ArrayList<>(15);
+        // Sort by date
+        sortKeys.add(new RowSorter.SortKey(0, SortOrder.DESCENDING));
+        sorter.setSortKeys(sortKeys);
+    }
+
 
     private void simulateRaceButton() {
         JButton simulateRaceButton = new JButton("Simulate race");
