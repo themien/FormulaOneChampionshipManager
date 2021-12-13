@@ -63,7 +63,7 @@ public class Formula1ChampionshipManager {//implements ChampionshipManager{
             else if (choice == 1) {formula1CM.addDriver();}
             else if (choice == 2) {formula1CM.deleteDriver();}
             else if (choice == 3) {formula1CM.changeDriverTeam();}
-            else if (choice == 4) {new Formula1TableSwing(formula1CM);} 
+            else if (choice == 4) {new Formula1ChampionshipGUI(formula1CM);} 
             else if (choice == 5) {formula1CM.addRace();}
             else if (choice == 6) {formula1CM.displayStatistics();}
             else if (choice == 7) {formula1CM.displayTable();}
