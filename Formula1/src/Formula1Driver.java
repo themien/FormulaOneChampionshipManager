@@ -1,6 +1,7 @@
 
 /*
 This class which inherits from driver holds the information of 
+the Formula1Driver participating in the Formula 1 Championship
 */
 public class Formula1Driver extends Driver {
 

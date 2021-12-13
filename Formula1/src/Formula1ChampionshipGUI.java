@@ -8,7 +8,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 class MyActionListener implements ActionListener {
-    private int i = 1;
+    // private int i = 1;
     private JFrame frame;
     public JTable formula1Table;
     public JTable allRacesTable;
@@ -25,23 +25,24 @@ class MyActionListener implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if ("simulateRace".equals(e.getActionCommand())) {
-
             Race race = new Race(this.formula1CM.drivers);
             this.formula1CM.addRace(race);
-
-            this.formula1Table.setModel(new Formula1ChampionshipTableModel(this.formula1CM.drivers));
-            this.allRacesTable.setModel(new RacesTableModel(this.formula1CM.races));
             this.raceTable.setModel(new RaceTableModel(race));
+            updateTables();
             // TODO: sort the updated datamodel
 
         } else if ("simulateRaceProb".equals(e.getActionCommand())) {
             Race race = new Race(this.formula1CM.drivers);//TODO:.simulateWithWeights();
             this.formula1CM.addRace(race);
-            this.formula1Table.setModel(new Formula1ChampionshipTableModel(this.formula1CM.drivers));
+            this.raceTable.setModel(new RaceTableModel(race));
+            updateTables();
+        } 
+    }
 
-        } else if ("searchDriverRaces".equals(e.getActionCommand())) {
-            
-        }
+    public void updateTables() {
+            this.formula1Table.setModel(new Formula1ChampionshipTableModel(this.formula1CM.drivers));
+            this.allRacesTable.setModel(new RacesTableModel(this.formula1CM.races));
+    }
         // System.out.println("Pressed Button " + i++ + "th time!");
         // if (i % 2 == 0)
         // frame.getContentPane().setBackground(Color.red);
@@ -50,7 +51,7 @@ class MyActionListener implements ActionListener {
         // }
     }
 
-}
+
 
 class TextSearchActionListener implements ActionListener {
     private JFrame frame;
