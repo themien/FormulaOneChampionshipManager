@@ -1,3 +1,4 @@
+
 import java.util.Scanner;
 
 public class Menu {
@@ -10,9 +11,9 @@ public class Menu {
         System.out.println("1. New Driver");
         System.out.println("2. Delete driver");
         System.out.println("3. Change driver team");
-        System.out.println("4. Display stats");
+        System.out.println("4. Display stats for a specified driver");
         System.out.println("5. Add a race to the Formula 1 Championship");
-        System.out.println("");
+        System.out.println("6. Show the GUI");
         System.out.println("7. Display table");
         System.out.println("8. Save data");
     }
@@ -27,17 +28,21 @@ public class Menu {
         int choice;
         System.out.println("Press 0 to show the menu.");
         System.out.print("Please enter an option: ");
-        // TODO: error if string is inputed
-        choice = input.nextInt();
-        System.out.println();
-         
+        String inputed = input.next();
+        try {
 
-        if (choice < -1 || choice >10 ) {
-            System.out.println("Choice not recognised, please try again.");
-            // Recursive method to get a valid input
+            choice = Integer.parseInt(inputed);
+            System.out.println("");
+            if (choice < -1 || choice >10 ) {
+                System.out.println("Choice not recognised, please try again.");
+                // Recursive method to get a valid input
+                choice = getMenuChoice(input);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("");
+            System.out.print("Seleceted choice is not a number. PLease insert a correct choice: ");
             choice = getMenuChoice(input);
         }
-
         return choice;
     }
 

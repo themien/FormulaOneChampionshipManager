@@ -27,13 +27,24 @@ class MyActionListener implements ActionListener {
         if ("simulateRace".equals(e.getActionCommand())) {
             Race race = new Race(this.formula1CM.drivers, false);
             this.formula1CM.addRace(race);
-            this.raceTable.setModel(new RaceTableModel(race));
+            RaceTableModel model = new RaceTableModel(race);
+            this.raceTable.setModel(model);
+            // // sort by date
+            // TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(this.formula1Table.getModel());
+            // this.raceTable.setRowSorter(sorter);
+            // ArrayList<RowSorter.SortKey> sortKeys = new ArrayList<>(15);
+            // sortKeys.add(new RowSorter.SortKey(6, SortOrder.DESCENDING));
+            // sorter.setSortKeys(sortKeys);
+            // update tables
             updateTables();
-            // TODO: sort the updated datamodel
+            // TODO: sort does not work, looks like it sorting string not int
+            
 
         } else if ("simulateRaceProb".equals(e.getActionCommand())) {
-            Race race = new Race(this.formula1CM.drivers, true);//TODO:.simulateWithWeights();
+            // simulate a new race based by the starting positions of the drivers
+            Race race = new Race(this.formula1CM.drivers, true);
             this.formula1CM.addRace(race);
+            // update the table
             this.raceTable.setModel(new RaceTableModel(race));
             updateTables();
         } 
@@ -68,15 +79,24 @@ class TextSearchActionListener implements ActionListener {
                 DriverRaces driverRaces = new DriverRaces(driver, formula1CM);
                 // display the model on a table
                 JTable testTable = new JTable();
-                testTable.setModel(new DriverRacesTableModel(driverRaces.driverRaces));
+                DriverRacesTableModel model = new DriverRacesTableModel(driverRaces.driverRaces);
+                testTable.setModel(model);
                 JScrollPane testSC = new JScrollPane(testTable);
                 // TODO: make this frame nicer
                 JFrame testFrame = new JFrame();
+
+                // sort by date
+                TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+                testTable.setRowSorter(sorter);
+                ArrayList<RowSorter.SortKey> sortKeys = new ArrayList<>(15);
+                sortKeys.add(new RowSorter.SortKey(0, SortOrder.DESCENDING));
+                sorter.setSortKeys(sortKeys);
+
                 testFrame.add(testSC);
                 testFrame.setSize(1200, 600);
                 testFrame.setVisible(true);
             } catch (Exception err) {
-                //TODO: handle exception
+                System.out.println("Formula 1 driver does not exist.");
             }
             
             }
@@ -152,12 +172,14 @@ public class Formula1ChampionshipGUI {
 
 
     private void addRaceTable() {
-        // TODO:check if there is a race yet first
-        // TODO: change to get selected race
-        Race race = this.formula1CM.races.get(0);
-        // System.out.println(race.getStandings());//////////////////////////////////
-        RaceTableModel model = new RaceTableModel(race);
-        this.raceTable.setModel(model);
+        try {
+            Race race = this.formula1CM.races.get(this.formula1CM.races.size() - 1);
+            // System.out.println(race.getStandings());//////////////////////////////////
+            RaceTableModel model = new RaceTableModel(race);
+            this.raceTable.setModel(model);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("There are no races to show yet.");
+        }
     }
 
 
