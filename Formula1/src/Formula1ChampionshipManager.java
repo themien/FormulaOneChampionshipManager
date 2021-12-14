@@ -99,6 +99,9 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
     }
 
 
+    /**
+     * Loads drivers data from "drivers.data" file
+     */
     private void loadDriversData() {
         try { 
             Scanner rf = new Scanner(new BufferedReader(new FileReader("data/drivers.data")));
@@ -122,7 +125,9 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
         }
     }
 
-
+    /**
+     * Loads races data from "races.data" file
+     */
     private void loadRacesData() {
         try {
             Scanner rf = new Scanner(new BufferedReader(new FileReader("data/races.data")));
@@ -150,6 +155,9 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
     }
 
 
+    /**
+     * Static method to parse integers
+     */
     public static int parseFileInt(String fileString) {
         int parsedInt = Integer.parseInt(fileString);
         return parsedInt;
@@ -157,8 +165,8 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
 
 
     /*
-      This method retrieves the Formula1Driver whose name equals the
-      name provided in the method signature
+    * This method retrieves the Formula1Driver whose name equals the
+    * name provided in the method signature
     */
     public Formula1Driver driverFindByName(String name) {
         return this.drivers.stream().filter(driver-> name.equals(driver.getName()))
@@ -166,6 +174,9 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
     }
 
 
+    /**
+     * Add a driver to the formula 1 championship
+     */
     public void addDriver() {
         if (this.nOfDrivers == this.maxDrivers) {
             System.out.println("No more drivers can be added to the championship. Limit reached.");
@@ -191,6 +202,9 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
     }
 
 
+    /**
+     * Deletes a driver from the formula 1 championship
+     */
     public void deleteDriver() {
         System.out.print("Deleting driver. Enter the name of the driver to delete permanently: ");
         String driversearch = input.next();
@@ -203,6 +217,9 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
     }
 
 
+    /**
+     * Displays the statistics of a selected driver
+     */
     public void displayStatistics() {
         System.out.print("Select the driver name for which to provide statistics: ");
         String driversearch = input.next();
@@ -223,6 +240,9 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
     }
 
 
+    /**
+     * Chenges the team of the inputed Formula 1 Driver
+     */
     public void changeDriverTeam() {
         System.out.print("Enter the name of the driver performing a change of team: ");
         String driversearch = input.next();
@@ -244,6 +264,9 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
     }
 
 
+    /**
+     * Adds a new race to the Formula 1 Championship 
+     */
     public void addRace(Race race) {
         races.add(race);
         ArrayList<Formula1Driver> standings = race.getStandings();
@@ -255,14 +278,20 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
     }
 
 
+    /**
+     * Sort the drivers by total points and then by times first
+     * @return sorted Arraylist of drivers
+     */
     public ArrayList<Formula1Driver> sortByPointsAndTimesFirst() {
         ArrayList<Formula1Driver> driversSort = new ArrayList<Formula1Driver>(this.drivers);
-        //TODO: this is a mistake, just resorting for 1st positions
-        Collections.sort(driversSort, Comparator.comparing((Formula1Driver driver) -> driver.getTotalPoints()).reversed());
+        Collections.sort(driversSort, Comparator.comparing((Formula1Driver driver) -> driver.getTotalPoints()).thenComparing(driver -> driver.getTimesFirst()).reversed());
         return driversSort;
     }
 
 
+    /**
+     * Displays a table with the current Championship Standings
+     */
     public void displayTable() {
         ArrayList<Formula1Driver> drivers = sortByPointsAndTimesFirst();
         String format = "|%1$-20s|%2$-20s|%3$-20s|\n";
@@ -301,6 +330,9 @@ public class Formula1ChampionshipManager implements ChampionshipManager {
         System.out.println("Drivers data saved.");
     }
 
+    /**
+     * Saves the Formula 1 Championship raes data to a "races.data" file
+     */
     public void saveRacesData() {
         try {
             FileWriter wf = new FileWriter("data/races.data");

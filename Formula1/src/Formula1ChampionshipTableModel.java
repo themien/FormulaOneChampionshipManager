@@ -26,13 +26,13 @@ public class Formula1ChampionshipTableModel extends AbstractTableModel {
             case 0: return String.class;
             case 1: return String.class;
             case 2: return String.class;
-            case 3: return int.class;
-            case 4: return int.class;
-            case 5: return int.class;
-            case 6: return int.class;
-            case 7: return int.class;
+            case 3: return Integer.class;
+            case 4: return Integer.class;
+            case 5: return Integer.class;
+            case 6: return Integer.class;
+            case 7: return Integer.class;
         }
-        return Object.class;
+        return super.getColumnClass(columnIndex);
     }
 
     @Override

@@ -1,5 +1,8 @@
 import java.time.LocalDate;
 
+/**
+ * Utility class to hold the information of a driver s race
+*/
 public class DriverRace {
     LocalDate raceDate;
     int position;

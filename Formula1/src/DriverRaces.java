@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 
+/**
+* Utility class used for GUI table creation
+*/
 public class DriverRaces {
 
     public ArrayList<DriverRace> driverRaces = new ArrayList<DriverRace>();

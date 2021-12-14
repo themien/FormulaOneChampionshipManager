@@ -8,11 +8,10 @@ public class Race {
     private LocalDate date;
     private ArrayList<Formula1Driver> standings;
 
-    /*
-        This constructor just randomises the drivers array to get the standings
-    */
+    /**
+     * Constructs a race with a randomised date
+     */
     public Race(ArrayList<Formula1Driver> drivers, boolean isWeighted) {
-        // TODO: assign standings manually
         this.standings = new ArrayList<Formula1Driver>(drivers);
         this.simulate(); 
         if (isWeighted) {
@@ -24,6 +23,9 @@ public class Race {
         // displayStandings();
     }
 
+    /**
+     * Constructs a race with a given date
+     */
     public Race(LocalDate date, ArrayList<Formula1Driver> drivers) {
         this.standings = new ArrayList<Formula1Driver>(drivers);
         // this.simulate(); 
@@ -33,6 +35,7 @@ public class Race {
         this.date = date;
     }
 
+    // getter methods
     public LocalDate getDate() {
         return this.date;
     }
@@ -41,11 +44,17 @@ public class Race {
         return this.standings;
     }
 
+    /**
+     * Gets the driver with the provided standing
+     */
     public Formula1Driver getDriverByStanding(int standing) {
         Formula1Driver driver = this.standings.get(standing);
         return driver;    
     }
 
+    /**
+     * Display the race standings
+     */
     public void displayStandings () {
         for (int i=0; i<this.standings.size(); i++) {
             String driverName = this.standings.get(i).name;
@@ -57,7 +66,11 @@ public class Race {
             System.out.println("");
         }
     }
-    
+
+
+    /**
+     * Assigns points based on the driver standing
+     */
     public static int assignPoints(int finalStanding) {
         int points;
         if (finalStanding == 1) {points=25;}
@@ -75,12 +88,17 @@ public class Race {
     }
 
 
+    /**
+     * Simulates a random race
+     */
     public void simulate() {
         Collections.shuffle(this.standings);
     }
 
 
-
+    /**
+     * Simulates a race that is not fully random: the first positions starting the race are more likely to win 
+     */
     public void simulateWithWeights() {
         Random r = new Random();
         int randomInt = r.nextInt(100) + 1;

@@ -15,7 +15,8 @@ class MyActionListener implements ActionListener {
     public JTable raceTable;
     Formula1ChampionshipManager formula1CM;
 
-    public MyActionListener(JFrame f, JTable formula1Table, JTable allRacesTable, JTable raceTable, Formula1ChampionshipManager formula1CM) {
+    public MyActionListener(JFrame f, JTable formula1Table, JTable allRacesTable, JTable raceTable,
+            Formula1ChampionshipManager formula1CM) {
         this.frame = f;
         this.formula1CM = formula1CM;
         this.formula1Table = formula1Table;
@@ -29,15 +30,17 @@ class MyActionListener implements ActionListener {
             this.formula1CM.addRace(race);
             RaceTableModel model = new RaceTableModel(race);
             this.raceTable.setModel(model);
-            // // sort by date
-            // TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(this.formula1Table.getModel());
-            // this.raceTable.setRowSorter(sorter);
-            // ArrayList<RowSorter.SortKey> sortKeys = new ArrayList<>(15);
-            // sortKeys.add(new RowSorter.SortKey(6, SortOrder.DESCENDING));
-            // sorter.setSortKeys(sortKeys);
-            // update tables
             updateTables();
-            // TODO: sort does not work, looks like it sorting string not int
+            // sort by total points
+            TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(this.formula1Table.getModel());
+            this.formula1Table.setRowSorter(sorter);
+            ArrayList<RowSorter.SortKey> sortKeys = new ArrayList<>(15);
+            // Sort by points
+            sortKeys.add(new RowSorter.SortKey(6, SortOrder.DESCENDING));
+            // // Sort by number of first places
+            sortKeys.add(new RowSorter.SortKey(3, SortOrder.DESCENDING));
+            sorter.setSortKeys(sortKeys);
+            // update tables
             
 
         } else if ("simulateRaceProb".equals(e.getActionCommand())) {
@@ -47,22 +50,30 @@ class MyActionListener implements ActionListener {
             // update the table
             this.raceTable.setModel(new RaceTableModel(race));
             updateTables();
-        } 
+            // sort by total points
+            TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(this.formula1Table.getModel());
+            this.formula1Table.setRowSorter(sorter);
+            ArrayList<RowSorter.SortKey> sortKeys = new ArrayList<>(15);
+            // Sort by points
+            sortKeys.add(new RowSorter.SortKey(6, SortOrder.DESCENDING));
+            // // Sort by number of first places
+            sortKeys.add(new RowSorter.SortKey(3, SortOrder.DESCENDING));
+            sorter.setSortKeys(sortKeys);
+            
+        }
     }
 
     public void updateTables() {
-            this.formula1Table.setModel(new Formula1ChampionshipTableModel(this.formula1CM.drivers));
-            this.allRacesTable.setModel(new RacesTableModel(this.formula1CM.races));
+        this.formula1Table.setModel(new Formula1ChampionshipTableModel(this.formula1CM.drivers));
+        this.allRacesTable.setModel(new RacesTableModel(this.formula1CM.races));
     }
 
 }
 
-
-
 class TextSearchActionListener implements ActionListener {
     private JFrame frame;
     private JTextField textBox;
-    private Formula1ChampionshipManager formula1CM;  
+    private Formula1ChampionshipManager formula1CM;
 
     public TextSearchActionListener(JFrame f, JTextField textBox, Formula1ChampionshipManager formula1CM) {
         this.frame = f;
@@ -82,7 +93,6 @@ class TextSearchActionListener implements ActionListener {
                 DriverRacesTableModel model = new DriverRacesTableModel(driverRaces.driverRaces);
                 testTable.setModel(model);
                 JScrollPane testSC = new JScrollPane(testTable);
-                // TODO: make this frame nicer
                 JFrame testFrame = new JFrame();
 
                 // sort by date
@@ -98,8 +108,8 @@ class TextSearchActionListener implements ActionListener {
             } catch (Exception err) {
                 System.out.println("Formula 1 driver does not exist.");
             }
-            
-            }
+
+        }
     }
 
 }
@@ -165,23 +175,20 @@ public class Formula1ChampionshipGUI {
         ArrayList<RowSorter.SortKey> sortKeys = new ArrayList<>(15);
         // Sort by points
         sortKeys.add(new RowSorter.SortKey(6, SortOrder.DESCENDING));
-        // Sort by number of first places
+        // // Sort by number of first places
         sortKeys.add(new RowSorter.SortKey(3, SortOrder.DESCENDING));
         sorter.setSortKeys(sortKeys);
     }
 
-
     private void addRaceTable() {
         try {
             Race race = this.formula1CM.races.get(this.formula1CM.races.size() - 1);
-            // System.out.println(race.getStandings());//////////////////////////////////
             RaceTableModel model = new RaceTableModel(race);
             this.raceTable.setModel(model);
         } catch (IndexOutOfBoundsException e) {
             System.out.println("There are no races to show yet.");
         }
     }
-
 
     private void addAllRacesTable() {
         RacesTableModel model = new RacesTableModel(this.formula1CM.races);
@@ -195,31 +202,30 @@ public class Formula1ChampionshipGUI {
         sorter.setSortKeys(sortKeys);
     }
 
-
     private void simulateRaceButton(JPanel p) {
         JButton simulateRaceButton = new JButton("Simulate race");
         simulateRaceButton.setActionCommand("simulateRace");
         // this.frame.getContentPane().add(simulateRaceButton);
         p.add(simulateRaceButton);
-        simulateRaceButton.addActionListener(new MyActionListener(this.frame, this.formula1Table, this.allRacesTable, this.raceTable, formula1CM));
+        simulateRaceButton.addActionListener(
+                new MyActionListener(this.frame, this.formula1Table, this.allRacesTable, this.raceTable, formula1CM));
     }
-
 
     private void simulateRaceButtonWithProbabilities(JPanel p) {
         JButton simulateRaceButtonProb = new JButton("Simulate race biased by starting position");
         simulateRaceButtonProb.setActionCommand("simulateRaceProb");
         // this.frame.getContentPane().add(simulateRaceButtonProb);
-        simulateRaceButtonProb.addActionListener(new MyActionListener(this.frame, this.formula1Table, this.allRacesTable, this.raceTable, formula1CM));
+        simulateRaceButtonProb.addActionListener(
+                new MyActionListener(this.frame, this.formula1Table, this.allRacesTable, this.raceTable, formula1CM));
         p.add(simulateRaceButtonProb);
     }
-
 
     private void searchForDriverRacesButton() {
         JButton searchDriverRacesButton = new JButton("Search for driver races");
         searchDriverRacesButton.setActionCommand("searchDriverRaces");
         JTextField searchBox = new JTextField();
         searchDriverRacesButton.addActionListener(new TextSearchActionListener(this.frame, searchBox, formula1CM));
-        JPanel searchPanel = new JPanel(new GridLayout(1,1));
+        JPanel searchPanel = new JPanel(new GridLayout(1, 1));
         searchPanel.add(searchBox);
         searchPanel.add(searchDriverRacesButton);
         this.frame.add(searchPanel, BorderLayout.SOUTH);
