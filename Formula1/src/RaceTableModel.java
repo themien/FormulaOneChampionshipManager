@@ -25,7 +25,7 @@ public class RaceTableModel extends AbstractTableModel {
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         switch (columnIndex) {
-            case 0: return int.class;
+            case 0: return Integer.class;
             case 1: return String.class;
         }
         return Object.class;

@@ -3,6 +3,9 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 
+/**
+ * Table model for GUI table
+ */
 public class DriverRacesTableModel extends AbstractTableModel {
 
     private ArrayList<DriverRace> driverRaces;
@@ -26,7 +29,7 @@ public class DriverRacesTableModel extends AbstractTableModel {
     public Class<?> getColumnClass(int columnIndex) {
         switch (columnIndex) {
             case 0: return LocalDate.class;
-            case 1: return int.class;
+            case 1: return Integer.class;
         }
         return Object.class;
     }
