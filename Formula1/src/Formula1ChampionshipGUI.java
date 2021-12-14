@@ -7,8 +7,10 @@ import javax.swing.*;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+
+
+// Action listeners for the GUI
 class MyActionListener implements ActionListener {
-    // private int i = 1;
     private JFrame frame;
     public JTable formula1Table;
     public JTable allRacesTable;
@@ -114,6 +116,10 @@ class TextSearchActionListener implements ActionListener {
 
 }
 
+
+/**
+ * This class holds the GUI components
+ */
 public class Formula1ChampionshipGUI {
     public JFrame frame;
     public JTable formula1Table;

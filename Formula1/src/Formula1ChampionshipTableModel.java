@@ -1,7 +1,9 @@
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
-
+/**
+ * Holds the GUI driver's table model
+ */
 public class Formula1ChampionshipTableModel extends AbstractTableModel {
 
     private ArrayList<Formula1Driver> drivers;
